@@ -254,24 +254,7 @@ export class PriceQuote extends Component {
               }
             })})
             
-            console.log(idProdutoFaturaHospitais.length, "FILTRO EM HOSP")
-            console.log(planosOrder.length, "FILTRO EM COTACAO")
-            console.log(this.state.cotationAll.length, "FILTRO EM COTACAO ALL")
-
-      //CODIGO PARA FILTRO DE HOSPITAIS COM ERRO, POIS SELECIONANDO MAIS DE UM HOSPITAL
-      //ELE NAO TRAS O PLANO QUE TENHA OS DOIS, APENAS O PLANO QUE TENHA AO MENOS UM DOS HOSPITAIS
-      //    hospital.map((hosp) => {
-      //   hosp.idProdutoFatura.map((prod)=>{
-      //     cotationFilter.map((item) => {
-      //         if(prod == item.idProdutoFatura)
-      //             {
-      //                 let index = planosOrder.findIndex(val => val.idProdutoFatura == item.idProdutoFatura);
-      //                 if( index < 0 )
-      //                   planosOrder.push(item)
-      //             }
-      //       })
-      //     })
-      // })
+            
 
 
 

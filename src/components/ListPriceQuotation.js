@@ -520,9 +520,12 @@ export class ListPriceQuotation extends Component {
                     <Grid item spacing={0} className="table-footer" container>
                       <Grid item xs={3}>
                         <Grid className="txt-left bottom-idProtocolo">
-                          <p className="ans-code">
-                           ANS {`${String(cotacao.codigoans).substring(0, 3)}.${String(cotacao.codigoans).substring(3, 6)}/${String(cotacao.codigoans).substring(6, 8)}-${String(cotacao.codigoans).substring(8, 11)}`}
-                          </p>
+                          <div className="ans-area">
+                              <p className="ans-code">
+                              ANS {`${String(cotacao.codigoans).substring(0, 3)}.${String(cotacao.codigoans).substring(3, 6)}/${String(cotacao.codigoans).substring(6, 8)}-${String(cotacao.codigoans).substring(8, 11)}`}
+                              </p>
+                          </div>
+                         
                         </Grid>
                       </Grid>
                               <br/>
@@ -571,12 +574,12 @@ export class ListPriceQuotation extends Component {
                 </div>
                 <div className="entry">
                   <p className="subtitle bold">
-                  Detalhes e assistências do seguro - {cotacao.idProdutoFatura}
+                  Detalhes e assistências do seguro
                    <br/>
                   </p>
                   
                   <p>
-                    <span className="bold">Plano:</span>  {cotacao.nomePlano} <br/>
+                    <span className="bold">Plano:</span>  {cotacao.nomePlanoAns} <br/>
                     <span className="bold"> Coparticipativo:</span> {cotacao.coparticipacao == true ? "SIM" : "NÃO"}<br/>
                     <span className="bold"> Abrangência:</span> {cotacao.abrangencia}<br/>
                     <span className="bold"> Acomodação:</span> {cotacao.acomodacao}<br/>

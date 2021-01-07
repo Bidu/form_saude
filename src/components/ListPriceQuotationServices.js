@@ -5,6 +5,20 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 export default ({ cotacao }) => {
+
+  const  titleize = (text)  => {
+    var loweredText = text.toLowerCase();
+    var words = loweredText.split(" ");
+    for (var a = 0; a < words.length; a++) {
+        var w = words[a];
+
+        var firstLetter = w[0];
+        w = (firstLetter.toUpperCase() == "+" ? "" : firstLetter.toUpperCase()) ;
+        words[a] = w;
+    }
+    return words.join("");
+}
+
   return (
     <div>
       <table className="table-body">
@@ -14,22 +28,11 @@ export default ({ cotacao }) => {
               <figure className="icon">
                 <img
                   alt="hdmi"
-                  src={`${require("../assets/img/svg-icons/human-pregnant.svg")}`}
+                  src={`${require("../assets/img/svg-icons/participation.svg")}`}
                 />
               </figure>
               <br />
-              Obstetrícia
-            </td>
-
-            <td className="coberturas">
-              <figure className="icon">
-                <img
-                  alt="hdmi"
-                  src={`${require("../assets/img/svg-icons/hospital.svg")}`}
-                />
-              </figure>
-              <br />
-              Ambulatorial + Hospitalar
+              {cotacao.coparticipacao == true ? "Com Coparticipação" : "Sem Coparticipação"}
             </td>
 
             <td className="coberturas">
@@ -37,11 +40,13 @@ export default ({ cotacao }) => {
                 <img
                   alt="hdmi"
                   src={`${require("../assets/img/svg-icons/brazil.svg")}`}
+                  
                 />
               </figure>
               <br />
-              Nacional
+            {cotacao.abrangencia}
             </td>
+
             <td className="coberturas">
               <figure className="icon">
                 <img
@@ -50,7 +55,17 @@ export default ({ cotacao }) => {
                 />
               </figure>
               <br />
-              Coletiva
+              {cotacao.acomodacao}
+            </td>
+            <td className="coberturas">
+              <figure className="icon">
+                <img
+                  alt="hdmi"
+                  src={`${require("../assets/img/svg-icons/hospital.svg")}`}
+                />
+              </figure>
+              <br />
+              Segmentação {titleize(cotacao.segmentacao)}
             </td>
           </tr>
 

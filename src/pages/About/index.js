@@ -37,6 +37,7 @@ import { bdQuali } from "../../services/bdQuali"
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {bruf} from "../../services/bruf";
 import TermosUso from '../../components/TermosUso'
+import Popper from '../../components/Popper'
 import {
   textMaskPhone,
   textMaskNumber,
@@ -604,9 +605,8 @@ class About extends Component {
                   )} */}
                   
                     <Grid item xs={12} sm={6}>
-                      <InputLabel shrink id="gender">
-                        Entidades
-                      </InputLabel>
+                     
+                      <Popper textLabel={"Entidades (?)"} />
                       <Select
                         name="entidade"
                         fullWidth

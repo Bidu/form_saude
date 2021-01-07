@@ -720,8 +720,10 @@ p.validate-radio-button.bold {
     align-items: center;
     justify-content: center;
     margin-top: 0.125rem; }
-
-
+    .bottom-idProtocolo{
+      width: 100% !important;
+    }
+   
 
 @media (min-width: 768px) {
   .step-completed {
@@ -735,7 +737,7 @@ p.validate-radio-button.bold {
  
    }  
    .MuiGrid-root .txt-left p {
-     font-size: 12px !important;
+     font-size: 11px !important;
    }
    .list-price-quotation .table-header .valor-total {
     font-size: 1.3rem !important;
@@ -751,7 +753,7 @@ p.validate-radio-button.bold {
  
    }  
    .MuiGrid-root .txt-left p {
-    font-size: 11px !important;
+    font-size: 10px !important;
   }
   
 
@@ -763,8 +765,19 @@ p.validate-radio-button.bold {
     width: 90px !important;
  
    }  
+
+  .txt-left{
+    padding: 1px;
+    background-color: #000 !important;
+ }
+  .ans-area{
+    border: 0.1px solid #fff;
+    border-color: #fff;
+   
+  }
    .ans-code{
-    font-size: 3px !important;
+    font-size: 2px !important;
+    font-weight: 600;
   }
   .list-price-quotation .table-header .valor-total {
     font-size: 1.1rem !important;
@@ -801,8 +814,19 @@ p.validate-radio-button.bold {
   margin: 60px 0 10px 0;
   position: relative;
   font-size: 1rem; }
+
+  .txt-left{
+    padding: 2px;
+    background-color: #000 !important;
+ }
+  .ans-area{
+    border: 0.1px solid #fff;
+    border-color: #fff;
+   
+  }
   .ans-code{
-    font-size: 13.41px !important;
+     color:#fff !important;
+      font-size: 12px !important;
   }
   .area-button-contate{
     bottom: 35% !important;

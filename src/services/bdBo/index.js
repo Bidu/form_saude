@@ -145,22 +145,32 @@ const apiQualicorp= {
     let resposta = [];
     const url = `https://qualitech.qualicorp.com.br/api-focus-lead/adicionar-lead?api-key=${apiKeyAddLead}`;
     let date = new Date()
-    let day  = (date.getDay() < 10 ? `0${date.getDay()}` : date.getDay()) 
+    console.log(date.getDate())
+    let day  = (date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()) 
     let month = (date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1)
     let hour = (date.getHours() < 10 ? `0${date.getHours()}` : date.getHours())
     let minutes = (date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes())
     let seconds = (date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds())
+    let miliseconds = (date.getMilliseconds())
     let dateHour = `${date.getFullYear()}-${month}-${day} ${hour}:${minutes}:${seconds}`
     let beneficiarios = []
+    let dateBirthBeneficiarios = []
     if(cotation.plan.beneficiarios){
     await ((cotation.plan.beneficiarios)).filter((val)=>{ 
                                           return (val.chave != cotation.user.nome && 
                                                   val.dataNascimento != cotation.user.date_birth
                                                 ) 
-                                          }).map((val) => beneficiarios.push({
+                                          }).map((val) => 
+                                          {
+                                            beneficiarios.push({
                                             DATA_NASC: val.dataNascimento,
                                             VALOR_PLANO: "0"
-                                          }))
+                                          })
+
+
+                                          dateBirthBeneficiarios.push(val.dataNascimento)
+                                          
+                                        })
     }
    
     let lead = {
@@ -168,12 +178,9 @@ const apiQualicorp= {
         ID_LEAD: newHash(`${new Date()}${(cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,'') : cotation.user.cnpj.replace(/[^0-9]/g,'') )}`),
         NM_ORIGEM: "Solicitação",
         GRUPO_ORIGEM: "Solicitação",
-        ORIGEM_INTEGRACAO: "Bidu/Thinkseg",
+        ORIGEM_INTEGRACAO: `Bidu/Thinkseg - ${cotation.user.cpf ? "Adesão" : "PME"}`,
         DH_CAPTURA_LEAD_ORIGEM: dateHour,
         NOME: "teste",
-        CPF: (cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,''): ""),
-        NOME_EMPRESA:"teste",
-        CNPJ:(cotation.user.cnpj ? cotation.user.cnpj.replace(/[^0-9]/g,''): ""),
         EMAIL: "teste@teste.com",
         TELEFONE_PRINCIPAL:cotation.user.telefone.replace(/[^0-9]/g,''),
         TELEFONE_SECUNDARIO: "",
@@ -181,20 +188,24 @@ const apiQualicorp= {
         MIDIA_FORMATO: "",
         MIDIA_CAMPANHA: null,
         MIDIA_CONTEUDO: null,
-        UF: cotation.user.uf,
+        UF: cotation.user.estado,
         MUNICIPIO: cotation.user.cidade,
         PROFISSAO: (cotation.user.profissao ? cotation.user.profissao : ""),
-        ENTIDADE: (cotation.user.entidade ? cotation.user.entidade: ""),
-        OPERADORA: (cotation.user.operadora ? cotation.user.operadora : ""),
+        ENTIDADE: (cotation.plan.entidade ? cotation.plan.entidade: ""),
+        OPERADORA: (cotation.plan.operadora ? cotation.plan.operadora : ""),
         TIPO_ACOMODACAO: ( cotation.plan.acomodacao ? cotation.plan.acomodacao : ""),
         REEMBOLSO: ( cotation.plan.reembolso ?  cotation.plan.reembolso : "" ),
+        CPF: (cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,''): ""),
+        NOME_EMPRESA:"teste",
+        CNPJ:(cotation.user.cnpj ? cotation.user.cnpj.replace(/[^0-9]/g,''): ""),
         DATA_NASCIMENTO: (cotation.user.date_birth ? cotation.user.date_birth : ""),
         NUMERO_VIDAS: (cotation.plan.beneficiarios && cotation.plan.beneficiarios.length > 0 ? cotation.plan.beneficiarios.length : cotation.user.qtdeVidas),
         DEPENDENTES: beneficiarios,
+        DT_NASC_DEP: dateBirthBeneficiarios,
         PLANO: ( cotation.plan.nomePlano ? cotation.plan.nomePlano : ""),
         VALOR_PLANO_SIMULADO: ( cotation.plan.valorTotal ? cotation.plan.valorTotal : ""),
         LEAD_CLICK_TO_CALL: true,
-        HORA_CLICK_TO_CALL: null,
+        HORA_CLICK_TO_CALL: `${hour}:${minutes}:${seconds}:${miliseconds}`,
         LEAD_CHAT: false,
         HORA_CHAT: null,
         LEAD_DETALHE_PLANO: false,

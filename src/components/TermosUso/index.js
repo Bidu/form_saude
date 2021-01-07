@@ -84,8 +84,8 @@ export default (props) =>{
             <a class="termos-uso" href="https://www.bidu.com.br/termos-de-uso/" 
             target="blank"
                ><u>Termos de uso</u></a> e  &nbsp;
-            <a  class="termos-uso"  href="https://www.qualicorp.com.br/politica-de-privacidade-das-informacoes/" 
-            target="blank"><u>Política de Privacidade Global da Qualicop</u></a>
+            <a  class="termos-uso"  href="https://www.bidu.com.br/politica-de-privacidade/" 
+            target="blank"><u>Política de Privacidade</u></a>
             </p>
 
             <Dialog
