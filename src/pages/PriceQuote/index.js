@@ -360,7 +360,7 @@ export class PriceQuote extends Component {
             <Grid container spacing={2}>
                { this.state.cotationFilter &&  this.state.cotationFilter.length > 0 &&  this.state.cotationFilter.map((c, index) => (
                         <>
-                          <ListPriceQuotation key={index} quote={c} redeReferenciada={"precisamos colocar o array da rede referenciada!"} getQuote={this.getCustomQuote} />
+                          <ListPriceQuotation key={index} quote={c} redeReferenciada={this.state.redeReferenciadaHospital} getQuote={this.getCustomQuote} />
                        </>
                ))} 
                

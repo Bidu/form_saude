@@ -15,6 +15,7 @@ import Dictionary from "../helpers/Dictionary/Quote";
 import ErrorQuote from "./ErrorQuote";
 import ListPriceQuotationServices from "./ListPriceQuotationServices";
 import { apiQualicorp } from "../services/bdBo";
+import CircularProgress from "./CircularProgress"
 
 
 const marks_fipe = {
@@ -210,7 +211,9 @@ export class ListPriceQuotation extends Component {
       cotacao: this.props.quote,
       loading: false,
       customQuote: this.props.quote,
-      sucessoAddLead: false
+      sucessoAddLead: false,
+      redeReferenciadaHospital: [],
+      redeReferenciadaLaboratorio: []
     };
     this.escExitLightbox = this.escExitLightbox.bind(this);
   }
@@ -221,8 +224,20 @@ export class ListPriceQuotation extends Component {
   componentWillUnmount() {
     document.removeEventListener("keydown", this.escExitLightbox, false);
   }
-  componentDidUpdate() {
+  async componentDidUpdate() {
     //  this.setState({ cotacao: this.props.quote })
+    if(this.state.lightbox_details ){
+      if(this.state.redeReferenciadaHospital.length == 0 )
+      {
+        let hospitais = await apiQualicorp.redeReferenciadas(this.state.cotacao.idProdutoFatura, "hospital")
+        let laboratorios = await apiQualicorp.redeReferenciadas(this.state.cotacao.idProdutoFatura, "laboratorio")
+ 
+        this.setState({
+          redeReferenciadaHospital: hospitais.data,
+          redeReferenciadaLaboratorio:laboratorios.data
+        })
+      }   
+    }
   }
 
   handleChange = (event) => {
@@ -587,7 +602,18 @@ export class ListPriceQuotation extends Component {
                     <span className="bold"> Código ANS:</span> {cotacao.codigoans}<br />
                    </p>
                    <p>
-                    <span className="bold">Total Rede  Referência:</span>
+                    <span className="bold">Total Rede  Referência:</span><br/>
+                    {
+                      this.state.redeReferenciadaHospital.length == 0 ?
+                      <CircularProgress />
+                      :
+                      <>
+                        Hospitais: {this.state.redeReferenciadaHospital.length} <br/>
+                        Laboratórios:{this.state.redeReferenciadaLaboratorio.length}
+                      </>
+
+                    }
+                   
                   </p>
                       <p>
                         {/* <span className="bold">Hospital:</span> {cotacao.total_rede_referencia.Hospital}<br/>
@@ -598,7 +624,7 @@ export class ListPriceQuotation extends Component {
                    
 
                   <p>
-                    <span className="bold">Rede Referência: </span>
+                    {/* <span className="bold">Rede Referência: </span> */}
                   </p>
                   {/* {cotacao.rede_referencia
                     .map((q, index) => (

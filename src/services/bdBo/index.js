@@ -145,7 +145,7 @@ const apiQualicorp= {
     let resposta = [];
     const url = `https://qualitech.qualicorp.com.br/api-focus-lead/adicionar-lead?api-key=${apiKeyAddLead}`;
     let date = new Date()
-    console.log(date.getDate())
+    // console.log(date.getDate())
     let day  = (date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()) 
     let month = (date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1)
     let hour = (date.getHours() < 10 ? `0${date.getHours()}` : date.getHours())
@@ -218,8 +218,8 @@ const apiQualicorp= {
         HORA_MOBILE: null
       }]
     }
-    console.log(cotation)
-    console.log('lead', lead)
+    // console.log(cotation)
+    // console.log('lead', lead)
 
     await axios
       .put(url, lead)
@@ -239,7 +239,7 @@ const apiQualicorp= {
     await axios
       .post(url, params)
       .then(function (res) {
-        console.log(res)
+        // console.log(res)
         if(res.status == 200)
             statusPlanosIdPorFatura.push(res.data);
       })

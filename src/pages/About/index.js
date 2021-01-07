@@ -482,7 +482,6 @@ class About extends Component {
                   if(newValue && newValue.cidades){
                     this.props.values.estado = newValue.sigla
                     this.setState({cidades: newValue.cidades})
-                    console.log(newValue.cidades, "ESTADO")
                   }
                   else{
                     this.setState({cidades: [], occupations: []})
