@@ -7,16 +7,20 @@ import CancelIcon from "@material-ui/icons/Cancel";
 export default ({ cotacao }) => {
 
   const  titleize = (text)  => {
-    var loweredText = text.toLowerCase();
-    var words = loweredText.split(" ");
-    for (var a = 0; a < words.length; a++) {
-        var w = words[a];
+    var loweredText = text.toLowerCase().replace(/[ ]\W/g, "")
 
-        var firstLetter = w[0];
-        w = (firstLetter.toUpperCase() == "+" ? "" : firstLetter.toUpperCase()) ;
-        words[a] = w;
+    var words = loweredText.split(" ")
+
+    for (var a = 0; a < words.length; a++) {
+        var w = words[a]
+       
+          var firstLetter = w[0]
+          w = firstLetter.toUpperCase() 
+          words[a] = w;
+        
+       
     }
-    return words.join("");
+    return words.join("/");
 }
 
   return (
