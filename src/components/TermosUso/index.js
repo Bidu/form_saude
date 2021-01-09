@@ -69,7 +69,7 @@ export default (props) =>{
         };
         const handleChange = (event) => {
             setChecked(event.target.checked);
-            props.optinChange(checked)
+            props.optinChange(event.target.checked)
         };
     return (
         <div>

@@ -40,6 +40,7 @@ import TermosUso from '../../components/TermosUso'
 import Popper from '../../components/Popper'
 import {
   textMaskPhone,
+  textMaskDateBirth,
   textMaskNumber,
   textMaskCpf,
   textMaskCEP,
@@ -67,7 +68,9 @@ class About extends Component {
       cep: "",
       occupations: [],
       entities: [],
-      optin: null,
+      optin: false,
+      opt: false,
+      clickSubmit: null,
       usuario: {
         cpf: "",
         nome: "",
@@ -92,32 +95,41 @@ class About extends Component {
         moradia: false,
       },
       dependents: [],
-      storage: JSON.parse(localStorage.getItem("@bidu2/user")),
       estados: [],
       cidades: []
     };
     this.handleCEP = this.handleCEP.bind(this);
+   
   }
 
   async componentDidMount() {
     
     
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
+    const brufSelect = JSON.parse(localStorage.getItem("@bidu2/brufselect"))
     
-    delete storage.entities 
-    delete storage.entidade 
-    delete storage.operadoras
-    delete storage.estado
-    delete storage.cidade
-    delete storage.dependents
+    this.props.values.opt = false
     this.props.values.operadoras = []
-    localStorage.setItem("@bidu2/user", JSON.stringify(storage))
+
+  
 
     if (storage.length !== 0) {
       this.setState(storage);
       this.props.setValues(storage);
+      this.getOccupations(storage.estado, storage.cidade)
     }
-    this.props.setStatus(false);
+
+    if( Object.keys(brufSelect).length > 0)
+    {
+      this.props.values.brufSelect = brufSelect
+      this.setState({cidades: brufSelect.cidades, estadoSelect: brufSelect})
+    }
+      this.props.setStatus(false);
+  }
+
+
+  componentDidUpdate(){
+    console.log(this.state.opt)
   }
 
   handleCEP = (e) => {
@@ -146,6 +158,9 @@ class About extends Component {
       delete this.props.values.profissao;
     }
   };
+
+ 
+
   getAddress = async (e) => {
     this.setState({ loading: true });
     let content = await apiQualicorp.endereco(this.state.cep.replace("-", ""));
@@ -259,6 +274,19 @@ class About extends Component {
   }
 
 
+  getDateNow = () =>{
+    let date = new Date()
+
+    let day  = (date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()) 
+    let month = (date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1)
+    let hour = (date.getHours() < 10 ? `0${date.getHours()}` : date.getHours())
+    let minutes = (date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes())
+    let seconds = (date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds())
+    let miliseconds = (date.getMilliseconds())
+
+    return  `${date.getFullYear()}-${month}-${day}`
+     
+  }
 
   handleChange = (event) => {
     if (event.target.name == "profissao") {
@@ -317,6 +345,12 @@ class About extends Component {
   }
 
 
+  optinCheck = async() => {
+      await console.log("optin", this.state.opt)
+       return this.state.opt
+  }
+
+
 
   render() {
     const { loading, redirect, usuario, storage } = this.state;
@@ -352,7 +386,7 @@ class About extends Component {
           <Title text="Plano de" bold="Saúde" />
           <p></p>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={ this.state.opt && handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -375,7 +409,7 @@ class About extends Component {
                   }}
                   InputProps={{
                     inputComponent: textMaskCpf,
-                    autoComplete: "off",
+                    autoComplete: "nope",
                   }}
                 />
               </Grid>
@@ -394,7 +428,7 @@ class About extends Component {
                   error={touched.nome && Boolean(errors.nome)}
                   InputProps={{
                     inputComponent: onlyLetters,
-                    autoComplete: "off",
+                    autoComplete: "nope",
                   }}
                   InputLabelProps={{
                     shrink: true,
@@ -420,7 +454,7 @@ class About extends Component {
                     shrink: true,
                   }}
                   InputProps={{
-                    autoComplete: "off",
+                    autoComplete: "nope",
                   }}
                 />
               </Grid>
@@ -443,7 +477,7 @@ class About extends Component {
                   }}
                   InputProps={{
                     inputComponent: textMaskPhone,
-                    autoComplete: "off",
+                    autoComplete: "nope",
                   }}
                 />
               </Grid>
@@ -457,6 +491,10 @@ class About extends Component {
                   value={this.props.values.date_birth ? this.props.values.date_birth : ""}
                   onChange={handleChange("date_birth")}
                   onBlur={this.handleChange}
+                  InputProps={{
+                    autoComplete: "nope",
+                    inputProps:{max: this.getDateNow()}
+                  }}
                   helperText={touched.date_birth ? errors.date_birth : ""}
                   error={touched.date_birth && Boolean(errors.date_birth)}
                 />
@@ -472,24 +510,31 @@ class About extends Component {
                 name="estado"
                 clearOnEscape
                 options={bruf}
+                value={this.props.values.estado ? {sigla: this.props.values.estado, nome: this.props.values.estadoCompleto} : ""}
                 getOptionLabel={(option) => option.nome}
                 renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal"  helperText={touched.estado ? errors.estado : ""}
                 error={touched.estado && Boolean(errors.estado)}/>}
          
       
                 onChange={(event, newValue,) => {
-                  
                   if(newValue && newValue.cidades){
                     this.props.values.estado = newValue.sigla
-                    this.setState({cidades: newValue.cidades})
+                    this.props.values.estadoCompleto = newValue.nome
+                    localStorage.setItem("@bidu2/brufselect", JSON.stringify(newValue))
+
+                    this.setState({cidades: newValue.cidades, estadoSelect: newValue})
+                    
                   }
                   else{
                     this.setState({cidades: [], occupations: []})
-                    this.props.values.cidade = ""
+                    
                   }
+                  this.props.values.cidade = ""
+                  this.props.values.profissao = ""
+                  this.props.values.entidade = ""
                 }}
                 InputProps={{
-                  autoComplete: "off",
+                  autoComplete: "nope",
                 }}
               />
               </FormControl>
@@ -504,9 +549,10 @@ class About extends Component {
                       id="cidade"
                       name="cidade"
                       clearOnEscape
+                      value={this.props.values.cidade ? this.props.values.cidade : ""}
                       options={this.state.cidades}
                       getOptionLabel={(option) => option}
-                      disabled={this.state.cidades.length >  0 ? false : true}
+                      disabled={this.state.cidades.length >  0  ? false : true}
                       renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal"  helperText={touched.cidade ? errors.cidade : ""}
                       error={touched.cidade && Boolean(errors.cidade)}/>}
 
@@ -516,12 +562,14 @@ class About extends Component {
                           this.getOccupations(this.props.values.estado, this.props.values.cidade)
                         }else{
                           this.setState({ occupations: []})
-                          this.props.values.profissao = ""
+                          
                         }
+                        this.props.values.profissao = ""
+                        this.props.values.entidade = ""
                       }
                     }
                     InputProps={{
-                      autoComplete: "off",
+                      autoComplete: "nope",
                     }}
                     />
                   </FormControl>
@@ -574,6 +622,7 @@ class About extends Component {
                       id="profissao"
                       name="profissao"
                       clearOnEscape
+                      value={this.props.values.profissao ? {id: this.props.values.profissao, nome: this.props.values.profissao} : ""}
                       options={this.state.occupations}
                       getOptionLabel={(option) => option.nome}
                       disabled={this.state.occupations.length >  0 ? false : true}
@@ -588,6 +637,7 @@ class About extends Component {
                             this.props.values.estado,
                             this.props.values.cidade
                           );
+                          this.props.values.entidade = ""
                           
                         }
                       }}
@@ -629,7 +679,7 @@ class About extends Component {
 
                         {this.state.entities.length > 0 &&
                           this.state.entities.map((e, key) => (
-                            <MenuItem value={e.id}>{e.nome}</MenuItem>
+                            <MenuItem value={e.id}>{e.nome}-{e.id}</MenuItem>
                           ))}
                       </Select>
                     </Grid>
@@ -679,11 +729,11 @@ class About extends Component {
               {loading && <Loading />}
             </Grid>
             <br />
-            { 
+            {/* { 
             this.props.values.profissao && this.props.values.profissao.length > 0 && 
             this.props.values.operadoras && this.props.values.operadoras.length > 0 &&
             this.props.values.entities && this.props.values.entities.length > 0 &&
-             (
+             ( */}
               <>
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />
@@ -706,20 +756,34 @@ class About extends Component {
                 
 
                 <div className="actions about-actions">
-                  
-                  <TermosUso optinChange={(props) => this.setState({optin: props})}/>
-                  {this.state.optin == false &&
+                
+                  <TermosUso 
+                   name="opt" 
+                   value={this.props.values.opt}
+                   optinChange={ (props) => { 
+                                               console.log(props)
+                                               this.props.values.opt= props
+                                               this.setState({opt: props, clickSubmit: false})                                           
+                                               }}
+                    />
+  
+                  {this.props.values.opt == false  && 
+                      <div style={{textAlign:'center', width: '100%', padding: "0 0 10px 0"}}>
+                        <p style={{fontSize:'0.65rem', color:'#f44336', fontFamily: "Arial"}}>É Necessário aceitar os Termos de Uso e Política de Privacidade para continuar</p>
+                      </div>
+                  }
                   <Button
                     type="submit"
                     className="btn-next about-btn-next"
-                    disabled={this.state.optin == false ? false : true }
+                    onClick={() => this.setState({clickSubmit: true})}
+                    disabled={!this.state.opt}
                   >
                     Quero uma cotação
                   </Button>
-                  }
+                  
                 </div>
               </>
-              )}
+              {/* )} */}
           </form>
           <div className="actions mt0">
             <Link className="btn-back" to="/">
@@ -771,7 +835,8 @@ const Form = withFormik({
     profissao,
     date_birth,
     cidade,
-    estado
+    estado,
+    opt
   
   }) => {
     return {
@@ -782,7 +847,8 @@ const Form = withFormik({
       profissao: profissao || "",
       date_birth: date_birth || "",
       cidade: cidade || "",
-      estado: estado || ""
+      estado: estado || "",
+      opt: opt || ""
     };
   },
 
@@ -821,7 +887,13 @@ const Form = withFormik({
               return false
             else  
               return true
-        })
+        }),
+    opt: Yup.string()
+          .required("É Necessário aceitar os Termos de Uso e Política de Privacidade para continuar")
+          .test("opt", "É Necessário aceitar os Termos de Uso e Política de Privacidade para continuar", (value) => {
+            return value
+          })
+
        
   }),
 

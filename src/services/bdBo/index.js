@@ -1,16 +1,16 @@
 import axios from "axios";
 
 //DEV
-const server = "https://apiceluladigitalhm.qualicorp.com.br";
-const apiKeyOperadoras= "1b2f206d-26e9-4fcc-8be6-1c1ed19f00bc";
-const apiKeyRedeReferenciadas= "2bb30205-520c-4721-9290-b2dc862b32bf";
-const apiKeyFatoresModeradores="2e1b29c8-6153-45dd-af7a-a0eb111c37ab";
-const apiKeyEntidades="b5539012-ed84-43f6-96d0-2f59f7bc208f";
-const apiKeyPublicoAlvo="f2578d0c-423e-4c9f-8cd9-5b5f8bed946f"; 
-const apiKeyInformacoesAdicionaisPorPlano="ddfca8f5-064b-4db6-b3f2-30f27a92d2e4";
-const apiKeyCep="b0f0f3ac-a1c2-4f99-882b-8df176ba97c5"; 
-const apiKeyPlanos="ddfca8f5-064b-4db6-b3f2-30f27a92d2e4";
-const apiKeyPlanosIdPorFatura="ddfca8f5-064b-4db6-b3f2-30f27a92d2e4";
+const server = "https://integracao.qualicorp.com.br";
+const apiKeyOperadoras= "7d604537-d69a-4124-9312-cc21752a9028";
+const apiKeyRedeReferenciadas= "1abdc445-97b8-401a-bc99-ca503b7f833e";
+const apiKeyFatoresModeradores="a6a63892-77b5-4eaa-bcfa-e49b50cd4340";
+const apiKeyEntidades="13d83a83-c5a1-4583-bbf2-33ed787ce671";
+const apiKeyPublicoAlvo="5ca85c6a-39e8-45d3-a1cd-bbee438d018b"; 
+const apiKeyInformacoesAdicionaisPorPlano="d61b3bd6-a2ac-4d9e-a5f7-59ad0fd85ca3";
+const apiKeyCep="84ea2cf8-97e1-4506-a737-31888d77f9df"; 
+const apiKeyPlanos="d61b3bd6-a2ac-4d9e-a5f7-59ad0fd85ca3";
+const apiKeyPlanosIdPorFatura="d61b3bd6-a2ac-4d9e-a5f7-59ad0fd85ca3";
 const apiKeyAddLead = "99045a7c-56b8-46b2-ad29-7aa128989b90"
 var current_date = (new Date()).valueOf().toString();
 var random = Math.random().toString();
@@ -180,8 +180,8 @@ const apiQualicorp= {
         GRUPO_ORIGEM: "Solicitação",
         ORIGEM_INTEGRACAO: `Bidu/Thinkseg - ${cotation.user.cpf ? "Adesão" : "PME"}`,
         DH_CAPTURA_LEAD_ORIGEM: dateHour,
-        NOME: "teste",
-        EMAIL: "teste@teste.com",
+        NOME: cotation.user.cpf ? cotation.user.nome : cotation.user.nomecontato ,
+        EMAIL: cotation.user.email,
         TELEFONE_PRINCIPAL:cotation.user.telefone.replace(/[^0-9]/g,''),
         TELEFONE_SECUNDARIO: "",
         MIDIA_VEICULO: "",
@@ -196,7 +196,7 @@ const apiQualicorp= {
         TIPO_ACOMODACAO: ( cotation.plan.acomodacao ? cotation.plan.acomodacao : ""),
         REEMBOLSO: ( cotation.plan.reembolso ?  cotation.plan.reembolso : "" ),
         CPF: (cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,''): ""),
-        NOME_EMPRESA:"teste",
+        NOME_EMPRESA: cotation.user.cpf ?  "" : cotation.user.nome,
         CNPJ:(cotation.user.cnpj ? cotation.user.cnpj.replace(/[^0-9]/g,''): ""),
         DATA_NASCIMENTO: (cotation.user.date_birth ? cotation.user.date_birth : ""),
         NUMERO_VIDAS: (cotation.plan.beneficiarios && cotation.plan.beneficiarios.length > 0 ? cotation.plan.beneficiarios.length : cotation.user.qtdeVidas),

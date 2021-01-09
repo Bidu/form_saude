@@ -51,16 +51,14 @@ export default function DialogDependents(props) {
     nome: "",
     nascimento: ""
   })
-  const [dense, setDense] = React.useState(false);
-  const [secondary, setSecondary] = React.useState(false);
-
+ 
   const [dependents, setDependents] = React.useState([])
   
 
   const classes = useStyles()
 
   useEffect(() => {
-    
+      
        props.setDependents(dependents)
     
   
@@ -69,6 +67,10 @@ export default function DialogDependents(props) {
 
   const handleClickOpen = () => {
     setOpen(true);
+    const dependentsStorage = JSON.parse(localStorage.getItem("@bidu2/user"))
+
+    if(dependentsStorage.dependents.length > 0 && dependents.length == 0)
+        setDependents(dependentsStorage.dependents)
   };
 
   const handleClose = () => {

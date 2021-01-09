@@ -468,7 +468,9 @@ class About extends Component {
                   }}
                   InputProps={{
                     inputComponent: textMaskCnpj,
+                    autoComplete: "nope"
                   }}
+                
                 />
               </Grid>
 
@@ -488,6 +490,9 @@ class About extends Component {
                   error={touched.nomecontato && Boolean(errors.nomecontato)}
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    autoComplete: "nope"
                   }}
                 />
               </Grid>
@@ -512,6 +517,10 @@ class About extends Component {
                     this.setState({cidades: newValue.cidades})
                   }
                 }}
+                InputProps={{
+                  autoComplete: "nope"
+                }}
+                
                
               />
               </FormControl>
@@ -533,6 +542,9 @@ class About extends Component {
                       onChange={(event, newValue) => {
                           this.props.values.cidade = newValue
                       }}
+                      InputProps={{
+                        autoComplete: "nope"
+                      }}
                     />
                   </FormControl>
               </Grid>
@@ -551,6 +563,9 @@ class About extends Component {
                   error={touched.email && Boolean(errors.email)}
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    autoComplete: "nope"
                   }}
                 />
               </Grid>
@@ -573,6 +588,7 @@ class About extends Component {
                   }}
                   InputProps={{
                     inputComponent: textMaskPhone,
+                    autoComplete: "nope"
                   }}
                 />
               </Grid>

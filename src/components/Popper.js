@@ -34,7 +34,7 @@ export default function TransitionsPopper(props) {
       <Popper id={id} open={open} anchorEl={anchorEl} transition>
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={30} onClick={handleClick}>
-            <div className={classes.paper}>“Entidade de classe é um grupo que reúne e representa pessoas de uma determinada categoria profissional. Como por exemplo a OAB (Advogados) e o CREA (Engenheiros). Selecione a sua entidade ou, caso não tenha nenhuma, solicite o contato de um dos nossos consultores e descubra as melhores opções para você.”</div>
+            <div className={classes.paper}>“Entidade de classe é um grupo que reúne e representa pessoas de uma determinada categoria profissional. Como por exemplo a OAB (Advogados) e o CREA (Engenheiros).”</div>
           </Fade>
         )}
       </Popper>

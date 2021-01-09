@@ -84,21 +84,22 @@ export class PriceQuote extends Component {
 
     let user = JSON.parse(localStorage.getItem("@bidu2/user"))
       if(
-        user &&
-        user.cidade != "" &&
-        user.cpf != "" &&
-        user.date_birth != "" &&
-        user.email != "" &&
-        user.estado != "" &&
-        user.nome != "" &&
-        user.entities.length > 0 &&
-        user.operadoras.length > 0 &&
-        user.profissao != "" &&
-        user.telefone != "" 
+              user &&
+              user.cidade != "" &&
+              user.cpf != "" &&
+              user.date_birth != "" &&
+              user.email != "" &&
+              user.estado != "" &&
+              user.nome != "" &&
+              user.entities.length > 0 &&
+              user.operadoras.length > 0 &&
+              user.profissao != "" &&
+              user.telefone != "" 
          )
       { 
        
        let cotationAll = []
+       let cotationIdProducts = []
         let beneficiarios = [
           {
             "chave": user.nome,
@@ -117,14 +118,11 @@ export class PriceQuote extends Component {
         }
     
 
-        await Promise.all(user.operadoras.map(async (entidade) => {
-          await Promise.all( entidade.map( async (operadora) => {
             let getPlan = {
           
               "uf": user.estado,
               "cidade": user.cidade ,
-              "entidade": operadora.entite,
-              "operadora": operadora.name,
+              "entidade": user.entidade,
               "beneficiarios": beneficiarios
             }
            
@@ -135,15 +133,22 @@ export class PriceQuote extends Component {
             {
               plans.data.map((item) => {
                 cotationAll.push(item)
+                cotationIdProducts.push(item.idProdutoFatura)
               })
             }
-          }))
-        }))
+        
+            console.log("idprod", cotationIdProducts.join(","))
         
         this.setState({cotationAll, cotationFilter: cotationAll})
         await this.getRedeReferenciada(cotationAll)
       } 
+      else{
+        window.location.href = "/"
+      }
       // this.sortBy(1)
+
+
+      
       this.setState({
         loading: false,
       });
@@ -292,8 +297,11 @@ export class PriceQuote extends Component {
 
   async componentDidMount() {
     
-   
+  
     await this.getCotacoes()
+
+
+   
 
     }
    

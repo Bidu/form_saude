@@ -36,6 +36,9 @@ function App() {
   if (!localStorage.getItem("@bidu2/user")) {
     localStorage.setItem("@bidu2/user", JSON.stringify(obj));
   }
+  if (!localStorage.getItem("@bidu2/brufselect")) {
+    localStorage.setItem("@bidu2/brufselect", JSON.stringify(obj));
+  }
   if (!localStorage.getItem("@bidu2/veiculo")) {
     localStorage.setItem("@bidu2/veiculo", JSON.stringify(obj));
   }
