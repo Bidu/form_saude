@@ -38,6 +38,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import {bruf} from "../../services/bruf";
 import TermosUso from '../../components/TermosUso'
 import Popper from '../../components/Popper'
+import FormHelperText from '@material-ui/core/FormHelperText';
 import {
   textMaskPhone,
   textMaskDateBirth,
@@ -128,10 +129,7 @@ class About extends Component {
   }
 
 
-  componentDidUpdate(){
-    console.log(this.state.opt)
-  }
-
+  
   handleCEP = (e) => {
     const cep = e.target.value;
     if (cep.length == 9) {
@@ -345,10 +343,6 @@ class About extends Component {
   }
 
 
-  optinCheck = async() => {
-      await console.log("optin", this.state.opt)
-       return this.state.opt
-  }
 
 
 
@@ -626,7 +620,10 @@ class About extends Component {
                       options={this.state.occupations}
                       getOptionLabel={(option) => option.nome}
                       disabled={this.state.occupations.length >  0 ? false : true}
-                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Profissão" margin="normal" />}
+                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Profissão" margin="normal" 
+                                                helperText={touched.profissao ? errors.profissao : ""}
+                                                 error={touched.profissao && Boolean(errors.profissao)}/>} 
+                      
                       onChange={(event, newValue) => {
                         if(newValue)
                         {
@@ -659,22 +656,22 @@ class About extends Component {
                       <Select
                         name="entidade"
                         fullWidth
-                        displayEmpty
                         labelId="entidade"
                         disabled={this.state.entities.length >  0 ? false : true}
                         id="entidade"
                         value={
                           this.props.values.entidade
                             ? this.props.values.entidade
-                            : "Não informado"
+                            : ""
                         }
                         onChange={this.handleChange}
-                        // onBlur={this.handleChange}
-                        helperText={touched.entidade ? errors.entidade : ""}
-                        error={touched.entidade && Boolean(errors.ent)}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                        displayEmpty
+                        helperText={errors.entidade}
+                        error={touched.entidade && Boolean(errors.entidade)}
                       >
-                        <MenuItem value="Selecione" disabled>
-                          Selecione
+                        <MenuItem value="" disabled>
+                          Entidade
                         </MenuItem>
 
                         {this.state.entities.length > 0 &&
@@ -682,6 +679,11 @@ class About extends Component {
                             <MenuItem value={e.id}>{e.nome}-{e.id}</MenuItem>
                           ))}
                       </Select>
+                      {  this.props.errors && this.props.touched.entidade && this.props.errors.entidade && 
+                      <FormHelperText style={{color: '#f44336'}}>
+                        {this.props.errors.entidade}
+                      </FormHelperText>
+                     }
                     </Grid>
 
                   {/* {this.state.entitiesFalse == false && (
@@ -761,13 +763,12 @@ class About extends Component {
                    name="opt" 
                    value={this.props.values.opt}
                    optinChange={ (props) => { 
-                                               console.log(props)
                                                this.props.values.opt= props
                                                this.setState({opt: props, clickSubmit: false})                                           
                                                }}
                     />
   
-                  {this.props.values.opt == false  && 
+                  {this.props.values.opt == false && this.state.clickSubmit && 
                       <div style={{textAlign:'center', width: '100%', padding: "0 0 10px 0"}}>
                         <p style={{fontSize:'0.65rem', color:'#f44336', fontFamily: "Arial"}}>É Necessário aceitar os Termos de Uso e Política de Privacidade para continuar</p>
                       </div>
@@ -833,6 +834,7 @@ const Form = withFormik({
     email,
     telefone,
     profissao,
+    entidade,
     date_birth,
     cidade,
     estado,
@@ -845,6 +847,7 @@ const Form = withFormik({
       email: email || "",
       telefone: telefone || "",
       profissao: profissao || "",
+      entidade:  entidade || "" ,
       date_birth: date_birth || "",
       cidade: cidade || "",
       estado: estado || "",
@@ -878,6 +881,7 @@ const Form = withFormik({
       cidade: Yup.string()
       .required("Cidade é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
+    entidade: Yup.string().required("Entidade é obrigatório"),
     date_birth: Yup.string()
         .required("Data de nascimento é obrigatório")
         .test("date_birth", "Informe uma data entre ano de 1920 e a data atual!", (value)=>{

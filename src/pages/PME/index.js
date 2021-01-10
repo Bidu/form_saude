@@ -55,7 +55,8 @@ class About extends Component {
       cep: "",
       occupations: [],
       entities: [],
-      option: null,
+      optin: false,
+      opt: false,
       usuario: {
         cpf: "",
         nome: "",
@@ -108,7 +109,7 @@ class About extends Component {
     this.setState({estado: bruf})
     this.props.values.qtdeVidas = 2
     this.props.values.profissao = "Selecione";
-
+    this.props.values.opt = false
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
     delete storage.cep 
     delete storage.entidade 
@@ -424,7 +425,7 @@ class About extends Component {
           <Title text="Plano de" bold="Saúde" />
           <p></p>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={ this.state.opt && handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -690,16 +691,29 @@ class About extends Component {
                   
                     <div className="actions pme-actions">
                   
-                      <TermosUso optinChange={(props) => this.setState({optin: props})}/>
-                      {this.state.optin == false &&
-                      <Button
-                        type="submit"
-                        className="btn-next about-btn-next"
-                        disabled={this.state.optin == false ? false : true }
-                      >
-                        Quero uma cotação
-                      </Button>
-                      }
+                    <TermosUso 
+                        name="opt" 
+                        value={this.props.values.opt}
+                        optinChange={ (props) => { 
+                                                    console.log(props)
+                                                    this.props.values.opt= props
+                                                    this.setState({opt: props, clickSubmit: false})                                           
+                                                    }}
+                          />
+        
+                        {this.props.values.opt == false && this.state.clickSubmit && 
+                            <div style={{textAlign:'center', width: '100%', padding: "0 0 10px 0"}}>
+                              <p style={{fontSize:'0.65rem', color:'#f44336', fontFamily: "Arial"}}>É Necessário aceitar os Termos de Uso e Política de Privacidade para continuar</p>
+                            </div>
+                        }
+                  <Button
+                    type="submit"
+                    className="btn-next about-btn-next"
+                    onClick={() => this.setState({clickSubmit: true})}
+                    disabled={!this.state.opt}
+                  >
+                    Quero uma cotação
+                  </Button>
                     </div>
                   </>
                 {/* )}  */}

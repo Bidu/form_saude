@@ -43,15 +43,11 @@ export default (props) =>{
 
 
       useEffect(() => {
-        if(open){
-          let a = window.document.querySelector("iframe")
-          a = a
-          console.log(a, "a")
-        }
-        
+    
+        props.optinChange(false)
       
       
-      }, [open])
+      }, [])
         const handleClickOpen = () => {
             setOpen(true);
         };
