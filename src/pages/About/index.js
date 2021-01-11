@@ -380,7 +380,7 @@ class About extends Component {
           <Title text="Plano de" bold="Saúde" />
           <p></p>
 
-          <form onSubmit={ this.state.opt && handleSubmit}>
+          <form onSubmit={ this.state.opt && handleSubmit} autoComplete="off">
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -506,8 +506,14 @@ class About extends Component {
                 options={bruf}
                 value={this.props.values.estado ? {sigla: this.props.values.estado, nome: this.props.values.estadoCompleto} : ""}
                 getOptionLabel={(option) => option.nome}
-                renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal"  helperText={touched.estado ? errors.estado : ""}
-                error={touched.estado && Boolean(errors.estado)}/>}
+                renderInput={(params) =>
+                              <TextField {...params} 
+                                    style={{marginTop:0}} 
+                                    label="Estado" margin="normal"  
+                                    helperText={touched.estado ? errors.estado : ""}
+                                    error={touched.estado && Boolean(errors.estado)}
+                                   autoComplete="nope"
+                              />}
          
       
                 onChange={(event, newValue,) => {

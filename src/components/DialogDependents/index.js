@@ -169,6 +169,9 @@ export default function DialogDependents(props) {
             onBlur={handleInputChange}
             fullWidth={true}
             maxWidth="lg"
+            inputProps={{
+              autoComplete:"off"
+            }}
           />
           </DialogContent>
           <DialogContent>
@@ -179,7 +182,7 @@ export default function DialogDependents(props) {
             value={form.nascimento}
             name="nascimento"
             type="date"
-            inputProps={{max: "9999-12-12", min: "1920-01-01"}}
+            inputProps={{max: "9999-12-12", min: "1920-01-01",  autoComplete:"off"}}
             fullWidth={true}
             maxWidth="lg"
             onChange={handleInputChange}

@@ -425,7 +425,7 @@ class About extends Component {
           <Title text="Plano de" bold="Saúde" />
           <p></p>
 
-          <form onSubmit={ this.state.opt && handleSubmit}>
+          <form onSubmit={ this.state.opt && handleSubmit} autoComplete="off">
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
