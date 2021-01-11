@@ -609,8 +609,8 @@ export class ListPriceQuotation extends Component {
                       <CircularProgress />
                       :
                       <>
-                        Hospitais: {this.state.redeReferenciadaHospital.length} <br/>
-                        Laboratórios:{this.state.redeReferenciadaLaboratorio.length}
+                        {`Hospitais: ${this.state.redeReferenciadaHospital.length}`} <br/>
+                        {`Laboratórios: ${this.state.redeReferenciadaLaboratorio.length}`}
                       </>
 
                     }
