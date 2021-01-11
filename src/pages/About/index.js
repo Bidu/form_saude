@@ -411,7 +411,7 @@ class About extends Component {
                 <TextField
                   value={this.props.values.nome ? this.props.values.nome : ""}
                   type="text"
-                  id="name"
+                  id="nome"
                   name="nome"
                   label="Nome"
                   placeholder="João da Silva"
@@ -422,7 +422,7 @@ class About extends Component {
                   error={touched.nome && Boolean(errors.nome)}
                   InputProps={{
                     inputComponent: onlyLetters,
-                    autoComplete: "nope",
+                    autoComplete: "off",
                   }}
                   InputLabelProps={{
                     shrink: true,
