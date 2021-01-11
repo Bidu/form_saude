@@ -115,9 +115,10 @@
 
 
       function nopeAutocomplete(){
-        let props = document.querySelectorAll("input[autocomplete='off']")
+        let props = document.querySelectorAll("input[autocomplete='nope']")
         for (let index = 0; index < props.length; index++) {
-          props[index].setAttribute("autocomplete", "nope");
+          if(props[index].id != "nome")
+            props[index].setAttribute("autocomplete", "nope");
           
         }
       }
