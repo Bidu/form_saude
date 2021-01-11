@@ -512,7 +512,6 @@ class About extends Component {
                                     label="Estado" margin="normal"  
                                     helperText={touched.estado ? errors.estado : ""}
                                     error={touched.estado && Boolean(errors.estado)}
-                                   autoComplete="nope"
                               />}
          
       

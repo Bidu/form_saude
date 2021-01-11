@@ -140,7 +140,7 @@ export class PriceQuote extends Component {
             console.log("idprod", cotationIdProducts.join(","))
         
         this.setState({cotationAll, cotationFilter: cotationAll})
-        await this.getRedeReferenciada(cotationAll)
+        await this.getRedeReferenciada(cotationIdProducts)
       } 
       else{
         window.location.href = "/"
@@ -160,11 +160,13 @@ export class PriceQuote extends Component {
    
     let redeReferenciadaHospital = []
     let redeReferenciadaLaboratorio = []
+    
 
-    let res = await Promise.all( cotations.map( async (e) => {
-        let res = await apiQualicorp.redeReferenciadas(e.idProdutoFatura, "hospital")
+    
+        let res = await apiQualicorp.redeReferenciadas(cotations, "hospital")
         if(res.status == 200 && res.data && res.data.length > 0)
         {
+          // redeReferenciadaHospital = res.data
           res.data.map((vRedeReferenciada) =>{
             let index = redeReferenciadaHospital.findIndex(val => val.id == vRedeReferenciada.id);
             if(index < 0){
@@ -183,25 +185,37 @@ export class PriceQuote extends Component {
                                                         telefone: vRedeReferenciada.telefone,
                                                         tipoAtendimento: [{
                                                                             tipos: vRedeReferenciada.tipoAtendimento,
-                                                                            idProdutoFatura: e.idProdutoFatura
+                                                                            idProdutoFatura: vRedeReferenciada.produtos
                                                                           }],
-                                                        idProdutoFatura:[e.idProdutoFatura]
+                                                        idProdutoFatura:vRedeReferenciada.produtos
                                                       }
                                                     )
                             }
             else{
-              redeReferenciadaHospital[index].idProdutoFatura.push(e.idProdutoFatura)
+              
+              
+              let prodFilters =  vRedeReferenciada.produtos.filter(prod => 
+                                  redeReferenciadaHospital[index].idProdutoFatura.findIndex(idProd => idProd == prod) == -1
+                                  )
+
+            prodFilters.map(e => {
+              
+              redeReferenciadaHospital[index].idProdutoFatura.push(e)
+
+
               redeReferenciadaHospital[index].tipoAtendimento.push({                                        
                                                                     tipos: vRedeReferenciada.tipoAtendimento,
-                                                                    idProdutoFatura: e.idProdutoFatura
+                                                                    idProdutoFatura: e
+            })
                                                                    })
             }
             
           })
+          console.log(redeReferenciadaHospital)
           // res.data = [...res.data, {idProdutoFatura: e.idProdutoFatura}]
           // redeReferenciadaHospital = [...redeReferenciadaHospital, res.data]
         }
-    }))
+    
 
   if(res)
     this.setState({redeReferenciadaHospital})

@@ -161,6 +161,7 @@ export default function SwipeableTemporaryDrawer(props) {
                             renderInput={(params) => 
                             <TextField {...params}  style={{marginTop:0}} className="text-autocomplete-filter-hospital" margin="normal" />}
                             onChange={(event, newValue) => {
+                              console.log(newValue)
                               setValue([
                                 ...fixedOptions,
                                 ...newValue.filter((option) => fixedOptions.indexOf(option) === -1),
