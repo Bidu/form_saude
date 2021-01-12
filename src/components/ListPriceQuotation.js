@@ -523,7 +523,6 @@ export class ListPriceQuotation extends Component {
                         <>
                           <span className="top-label nome-plano">
                             {cotacao.nomeAmigavel}
-                            <p>{cotacao.idProdutoFatura}</p>
                           </span>
                         </>
                       </Grid>
