@@ -1,6 +1,15 @@
 .texto-vidas {
   padding: 0 0 20px 0 !important;
 }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
 .texto-vidas-aviso {
   font-size: 14px;
   font-style: italic;

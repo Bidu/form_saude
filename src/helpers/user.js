@@ -55,6 +55,24 @@ export const textMaskDateBirth = (props) => {
     />
   );
 };
+export const onlyNumbers = (props) => {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={inputRef}
+      mask={[
+        /[0-9]/,
+        /[0-9]/,
+        /[0-9]/,
+        /[0-9]/,      
+      ]}
+      placeholderChar={"\u2000"}
+      guide={false}
+      keepCharPositions={false}
+    />
+  );
+};
 
 export const onlyLetters = (props) => {
   const { inputRef, ...other } = props;
@@ -485,6 +503,7 @@ export const textMaskNumber= (props) => {
     />
   );
 };
+
 export const textMaskNumberOfLifes= (props) => {
   const { inputRef, ...other } = props;
   return (

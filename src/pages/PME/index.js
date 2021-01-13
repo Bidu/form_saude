@@ -623,15 +623,20 @@ class About extends Component {
                         </Grid>
                         <Grid item xs={3} >
                           <TextField
-                            name="qtdevidas"
+                            name="qtdeVidas"
                             fullWidth
-                            labelId="qtdevidas"
+                            labelId="qtdeVidas"
                             id="qtdevidas"
-                            type="number"
+                            type="text"
+                            helperText={touched.qtdeVidas ? errors.qtdeVidas : ""}
+                            error={touched.qtdeVidas && Boolean(errors.qtdeVidas)}
                             value={
                               ( this.props.values.qtdeVidas ?  this.props.values.qtdeVidas : this.state.qtdeVidas)
                             }
-                            InputProps={{ inputProps: { min: 2, max: 3000 } }}
+                            InputProps={{ 
+                              inputComponent: onlyNumbers,
+                              inputProps: { min: 2, max: 3000 } }}
+
                             onChange={ (event) => { 
                               this.props.values.qtdeVidas = event.target.value
                               this.setState({qtdeVidas: event.target.value})
@@ -751,7 +756,8 @@ const Form = withFormik({
     telefone,
     cidade,
     estado,
-    nomecontato
+    nomecontato,
+    qtdeVidas
 
   }) => {
     return {
@@ -761,7 +767,8 @@ const Form = withFormik({
       telefone: telefone || "",
       cidade: cidade || "",
       estado: estado || "",
-      nomecontato: nomecontato || ""
+      nomecontato: nomecontato || "",
+      qtdeVidas: qtdeVidas || ""
     };
   },
   validationSchema: Yup.object().shape({
@@ -792,6 +799,15 @@ const Form = withFormik({
       .required("Estado é obrigatório"),
     nomecontato: Yup.string()
       .required("Nome para contato é obrigatório"),
+    qtdeVidas: Yup.string()
+      .required("Campo Obrigatório")
+      .test("qtdeVidas", "Valor inválido. Min 2, Max 3000", (value)=>{
+        console.log(value)
+        if (value >= 2 && value <= 3000)
+           return true 
+        else
+           return false
+      })
   }),
 
 
