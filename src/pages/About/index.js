@@ -622,7 +622,7 @@ class About extends Component {
                       name="profissao"
                       clearOnEscape
                       value={this.props.values.profissao ? {id: this.props.values.profissao, nome: this.props.values.profissao} : ""}
-                      options={this.state.occupations.filter(e => e.nome != null)}
+                      options={ this.state.occupations.filter(e => e.nome != null) }
                       getOptionLabel={option => option.nome}
                       disabled={this.state.occupations && this.state.occupations.length >  0 ? false : true}
                       renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Profissão" margin="normal" 
