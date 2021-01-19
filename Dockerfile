@@ -1,6 +1,6 @@
 FROM alpine:3.12
 EXPOSE 80
-# ADD config-docker/default.conf /etc/nginx/conf.d/default.conf
+ADD config-docker/default.conf /etc/nginx/conf.d/default.conf
 COPY . /var/www/form/htdocs
 RUN apk add nginx && \
     mkdir /run/nginx && \
