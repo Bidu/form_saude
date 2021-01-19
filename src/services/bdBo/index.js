@@ -1,254 +1,141 @@
 import axios from "axios";
 
-//DEV
-const server = "https://integracao.qualicorp.com.br";
-const apiKeyOperadoras= "7d604537-d69a-4124-9312-cc21752a9028";
-const apiKeyRedeReferenciadas= "1abdc445-97b8-401a-bc99-ca503b7f833e";
-const apiKeyFatoresModeradores="a6a63892-77b5-4eaa-bcfa-e49b50cd4340";
-const apiKeyEntidades="13d83a83-c5a1-4583-bbf2-33ed787ce671";
-const apiKeyPublicoAlvo="5ca85c6a-39e8-45d3-a1cd-bbee438d018b"; 
-const apiKeyInformacoesAdicionaisPorPlano="d61b3bd6-a2ac-4d9e-a5f7-59ad0fd85ca3";
-const apiKeyCep="84ea2cf8-97e1-4506-a737-31888d77f9df"; 
-const apiKeyPlanos="d61b3bd6-a2ac-4d9e-a5f7-59ad0fd85ca3";
-const apiKeyPlanosIdPorFatura="d61b3bd6-a2ac-4d9e-a5f7-59ad0fd85ca3";
-const apiKeyAddLead = "99045a7c-56b8-46b2-ad29-7aa128989b90"
-var current_date = (new Date()).valueOf().toString();
-var random = Math.random().toString();
+const server = "https://api-banco-dados-dot-bidu-digital-dev.appspot.com/auto";
+
 
 const headers = {
-  "Content-Type": "application/json",
-};
-const newHash =(s) => {
-  let hash =s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);    
-  return (hash < 0 ? hash * -1 : hash)
-}
+    "Content-Type": "application/json",
+  };
 
-const apiQualicorp= {
-  async operadoras(uf, cidade, entidade) {
-    let oper = [];
-    const url = `${server}/qvenda/operadoras/${entidade}?uf=${uf}&cidade=${cidade}&api-key=${apiKeyOperadoras}`
-    await axios
-      .get(url)
-      .then(function (res) {
-      
-        oper = res.data;
-      
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return oper;
-  },
+  const apiBdBo= {
 
-  async redeReferenciadas(idProdutoFatura, tipo ) {
-    //TIPO = hospital ou laboratorio
-    let resRedeReferenciada = [];
-    const url = `${server}/qvenda/rede-referenciadas/${idProdutoFatura}/${tipo}?api-key=${apiKeyRedeReferenciadas}`;
-    await axios
-      .get(url)
-      .then(function (res) {
-        
-        resRedeReferenciada = res.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return resRedeReferenciada;
-  },
-
-  async fatoresModeradores(idProdutoFatura) {
-    let statusFatoresModeradores = [];
-    const url = `${server}/fatores-moderadores/${idProdutoFatura}?api-key=${apiKeyFatoresModeradores}`;
-    await axios
-      .get(url)
-      .then(function (res) {
-        statusFatoresModeradores = res.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return statusFatoresModeradores;
-  },
-
-  async entidades(publicoAlvo, uf, cidade) {
-    let statusEntidades = [];
-    const url = `${server}/qvenda/entidades/?publicoAlvo=${publicoAlvo}&uf=${uf}&cidade=${cidade}&api-key=${apiKeyEntidades}`;
-    await axios
-      .get(url)
-      .then(function (res) {
-        statusEntidades = res.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return statusEntidades;
-  },
-  async publicoAlvo(uf, cidade) {
-    let statusPublicoAlvo = [];
-    const url = `${server}/qvenda/publicos-alvo?uf=${uf}&cidade=${cidade}&api-key=${apiKeyPublicoAlvo}`;
-    await axios
-      .get(url)
-      .then(function (res) {
-        statusPublicoAlvo = res.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return statusPublicoAlvo;
-  }, 
-  async informacoesAdicionaisPorPlano(idProdutoFatura) {
-    let statusInformacoesAddPlano = [];
-    const url = `${server}/qvenda/planos/${idProdutoFatura}/informacoesAdicionais?api-key=${apiKeyInformacoesAdicionaisPorPlano}`;
-    await axios
-      .get(url)
-      .then(function (res) {
-        statusInformacoesAddPlano = res.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return statusInformacoesAddPlano;
-  },
-  async endereco(cep) {
-    let statusEndereco = [];
-    const url = `${server}/qvenda/enderecos/cep/${cep}?api-key=${apiKeyCep}`;
-    await axios
-      .get(url)
-      .then(function (res) {
-        statusEndereco = res.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return statusEndereco;
-  },
-  async listarPlanos(plano) {
-    let planos = [];
-
-    const url = `${server}/qvenda/planos/lista?api-key=${apiKeyPlanos}`;
-    await axios
-      .post(url, plano)
-      .then(function (res) {
-        if(res.status == 200)
-            planos = res.data;
-        else
-            planos = []
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return planos;
-  },
-  
-  async addLead(cotation) {
-    
-    let resposta = [];
-    const url = `https://qualitech.qualicorp.com.br/api-focus-lead/adicionar-lead?api-key=${apiKeyAddLead}`;
-    let date = new Date()
-    // console.log(date.getDate())
-    let day  = (date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()) 
-    let month = (date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1)
-    let hour = (date.getHours() < 10 ? `0${date.getHours()}` : date.getHours())
-    let minutes = (date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes())
-    let seconds = (date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds())
-    let miliseconds = (date.getMilliseconds())
-    let dateHour = `${date.getFullYear()}-${month}-${day} ${hour}:${minutes}:${seconds}`
-    let beneficiarios = []
-    let dateBirthBeneficiarios = []
-    if(cotation.plan.beneficiarios){
-    await ((cotation.plan.beneficiarios)).filter((val)=>{ 
-                                          return (val.chave != cotation.user.nome && 
-                                                  val.dataNascimento != cotation.user.date_birth
-                                                ) 
-                                          }).map((val) => 
-                                          {
-                                            beneficiarios.push({
-                                            DATA_NASC: val.dataNascimento,
-                                            VALOR_PLANO: "0"
-                                          })
-
-
-                                          dateBirthBeneficiarios.push(val.dataNascimento)
-                                          
-                                        })
-    }
    
-    let lead = {
-      leads:[{
-        ID_LEAD: newHash(`${new Date()}${(cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,'') : cotation.user.cnpj.replace(/[^0-9]/g,'') )}`),
-        NM_ORIGEM: "Solicitação",
-        GRUPO_ORIGEM: "Solicitação",
-        ORIGEM_INTEGRACAO: `Bidu/Thinkseg - ${cotation.user.cpf ? "Adesão" : "PME"}`,
-        DH_CAPTURA_LEAD_ORIGEM: dateHour,
-        NOME: cotation.user.cpf ? cotation.user.nome : cotation.user.nomecontato ,
-        EMAIL: cotation.user.email,
-        TELEFONE_PRINCIPAL:cotation.user.telefone.replace(/[^0-9]/g,''),
-        TELEFONE_SECUNDARIO: "",
-        MIDIA_VEICULO: "",
-        MIDIA_FORMATO: "",
-        MIDIA_CAMPANHA: null,
-        MIDIA_CONTEUDO: null,
-        UF: cotation.user.estado,
-        MUNICIPIO: cotation.user.cidade,
-        PROFISSAO: (cotation.user.profissao ? cotation.user.profissao : ""),
-        ENTIDADE: (cotation.plan.entidade ? cotation.plan.entidade: ""),
-        OPERADORA: (cotation.plan.operadora ? cotation.plan.operadora : ""),
-        TIPO_ACOMODACAO: ( cotation.plan.acomodacao ? cotation.plan.acomodacao : ""),
-        REEMBOLSO: ( cotation.plan.reembolso ?  cotation.plan.reembolso : "" ),
-        CPF: (cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,''): ""),
-        NOME_EMPRESA: cotation.user.cpf ?  "" : cotation.user.nome,
-        CNPJ:(cotation.user.cnpj ? cotation.user.cnpj.replace(/[^0-9]/g,''): ""),
-        DATA_NASCIMENTO: (cotation.user.date_birth ? cotation.user.date_birth : ""),
-        NUMERO_VIDAS: (cotation.plan.beneficiarios && cotation.plan.beneficiarios.length > 0 ? cotation.plan.beneficiarios.length : cotation.user.qtdeVidas),
-        DEPENDENTES: beneficiarios,
-        DT_NASC_DEP: dateBirthBeneficiarios,
-        PLANO: ( cotation.plan.nomePlano ? cotation.plan.nomePlano : ""),
-        VALOR_PLANO_SIMULADO: ( cotation.plan.valorTotal ? cotation.plan.valorTotal : ""),
-        LEAD_CLICK_TO_CALL: true,
-        HORA_CLICK_TO_CALL: `${hour}:${minutes}:${seconds}:${miliseconds}`,
-        LEAD_CHAT: false,
-        HORA_CHAT: null,
-        LEAD_DETALHE_PLANO: false,
-        HORA_DETALHE_PLANO: null,
-        LEAD_SOLICITACAO: true,
-        HORA_SOLICITACAO: null,
-        LEAD_PEDIDOONLINE: false,
-        HORA_PEDIDOONLINE: null,
-        LEAD_MOBILE: true,
-        HORA_MOBILE: null
-      }]
-    }
-    // console.log(cotation)
-    // console.log('lead', lead)
+    async pesquisarSegurado(segurado) {
+        let response = [];
+        const url = `${server}/segurado`;
+        let cpf = { documento: segurado.cpf}
+        await axios
+          .post(url, cpf)
+          .then( async function  (res) {
+            response.push(res.data);
+            console.log(res.data.length)
+            if(res.status == 200 && res.data)
+            {
+               await this.atualizarSegurado( segurado, res.data.id ) 
+            }
+            else{
+                // await apiBdBo.criarSegurado(segurado)   
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        return response;
+      },
 
-    await axios
-      .put(url, lead)
-      .then(function (res) {
-        resposta = res
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return resposta;
-  },
+
+    async criarSegurado(segurado) {
+        let response = [];
+        let {date_birth} = segurado
+        let dateTime = new Date(`${date_birth} 00:00:00` )
+        let person = {
+            "nome": segurado.nome,
+             "documento": ( segurado.cpf == "" ? segurado.cnpj : segurado.cpf ) ,
+             "tipoPessoa":( segurado.cpf == "" ? "JURIDICA": "FISICA"),
+             "email":segurado.email,
+             "telefone": segurado.telefone,
+             "dataNascimento": dateTime,
+             "genero":"",
+             "profissoes":segurado.profissao,
+             "tipoResidencia":"",
+             "perfilEducacional":""
+           }
+        const url = `${server}/segurado/saude`;
+        await axios
+          .post(url, person)
+          .then(function (res) {
+            console.log(res);
+            response.push(res.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        return response;
+      },
+
+      async atualizarSegurado(segurado, person_id) {
+        let response = [];
+        let updatePerson = {
+                                "tipoPessoa":( segurado.cpf == "" ? "JURIDICA": "FISICA" ),
+                                "email":segurado.email,
+                                "telefone":segurado.telefone,
+                                "profissoes": segurado.profissao
+                           }
+        const url = `${server}/segurado/${ person_id }/saude`;
+        await axios
+          .put(url, updatePerson)
+          .then(function (res) {
+            console.log(res);
+            response.push(res.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        return response;
+      },
+
+      async criarEnderecoSegurado(endereco) {
+        let response = [];
+        let address = {
+            "idPessoa" : 12595,
+            "cidade":"São Paulo",
+            "estado":"SP"
+          }
+        const url = `${server}/saude/endereco/residencia`;
+        await axios
+          .post(url, endereco)
+          .then(function (res) {
+            console.log(res);
+            response.push(res.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        return response;
+      },
+
+
+
+
+
+
+
+
+
+      async postCotation(cotation){
+        let response = [];
+
+        let jsonCotation = {	
+            "idEndereco": 1713,
+            "idPessoa": 12595,
+            "cotacao": {"cpf":"107.755.726-40","nome":"vinicius oliveira","email":"v.cezar21@gmail.com","telefone":"(31) 98930-8060","profissao":"Advogado","entidade":"AASP","date_birth":"1991-12-21","cidade":"São Paulo","estado":"SP","opt":true,"operadoras":[[{"id":92693118000160,"name":"BRADESCO","entite":"AASP"}]],"dependents":[{"id":1,"nome":"maria clara","nascimento":"2017-12-21","idade":3},{"id":2,"nome":"davi do galo","nascimento":"2021-04-30","idade":0}],"estadoCompleto":"São Paulo","entities":[{"id":"AASP","nome":"ASSOCIACAO DOS ADVOGADOS DE SAO PAULO","cnaeEmpresaOperacional":false},{"id":"ABRABDIR","nome":"ASSOCIACAO BRASILEIRA DE ADVOGADOS E BACHAREIS EM DIREITO ABRABDIR","cnaeEmpresaOperacional":false,"tipo":"Fechada","taxa":{"existeTaxa":false,"valor":0},"fichaFiliacao":true},{"id":"ABRACEM","nome":"ASSOCIACAO BRASILEIRA DE CONSULTORES EMPRESARIAIS E PROFISSIONAIS LIBERAIS","cnaeEmpresaOperacional":false,"tipo":"Aberta","taxa":{"existeTaxa":false,"valor":0},"fichaFiliacao":true},{"id":"CAASP","nome":"CAIXA DE ASSISTENCIA DOS ADVOGADOS DE SAO PAULO","cnaeEmpresaOperacional":false}]}
+        }
+
+
+        const url = `${server}/saude/endereco/residencia`;
+        await axios
+          .post(url, cotation)
+          .then(function (res) {
+            console.log(res);
+            response.push(res.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        return response; 
+      }
+
+  }
   
-  
-  async planosIdPorFatura(params) {
-    let statusPlanosIdPorFatura = [];
-    const url = `${server}/qvenda/planos/lista?api-key=${apiKeyPlanosIdPorFatura}`;
-    await axios
-      .post(url, params)
-      .then(function (res) {
-        // console.log(res)
-        if(res.status == 200)
-            statusPlanosIdPorFatura.push(res.data);
-      })
-      .catch(function (error) {
-        return statusPlanosIdPorFatura;
-      });
-    return statusPlanosIdPorFatura;
-  },
 
-};
-
-export { apiQualicorp };
+  export default apiBdBo

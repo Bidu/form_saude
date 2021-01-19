@@ -20,7 +20,7 @@ import Button from "@material-ui/core/Button";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { apiQualicorp } from "../../services/bdBo";
+import { apiQualicorp } from "../../services/qualicorp";
 import {bruf} from "../../services/bruf";
 import TermosUso from '../../components/TermosUso'
 
@@ -40,7 +40,7 @@ import {
 
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
-import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
+
 
 import { createBrowserHistory } from "history";
 import { entities } from "../../helpers/entities";

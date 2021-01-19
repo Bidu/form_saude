@@ -14,7 +14,7 @@ import "rc-slider/assets/index.css";
 import Dictionary from "../helpers/Dictionary/Quote";
 import ErrorQuote from "./ErrorQuote";
 import ListPriceQuotationServices from "./ListPriceQuotationServices";
-import { apiQualicorp } from "../services/bdBo";
+import { apiQualicorp } from "../services/qualicorp";
 import CircularProgress from "./CircularProgress"
 
 

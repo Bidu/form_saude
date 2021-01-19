@@ -26,19 +26,18 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { withFormik } from "formik";
 import * as Yup from "yup";
-import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
-import { apiQualicorp } from "../../services/bdBo";
+import { apiQualicorp } from "../../services/qualicorp";
 import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
 import DialogAlert from "../../components/DialogAlert";
-import { bdQuali } from "../../services/bdQuali"
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {bruf} from "../../services/bruf";
 import TermosUso from '../../components/TermosUso'
 import Popper from '../../components/Popper'
 import FormHelperText from '@material-ui/core/FormHelperText';
+import apiBdBo from '../../services/bdBo'
 import {
   textMaskPhone,
   textMaskDateBirth,
@@ -54,7 +53,7 @@ import "./about.css"
 
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
-import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
+
 
 import { createBrowserHistory } from "history";
 import { entities } from "../../helpers/entities";
@@ -911,8 +910,13 @@ const Form = withFormik({
     { props, setStatus, setValues, setSubmitting }
   ) => {
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
-    setStatus(true);
-    setSubmitting(false);
+
+    let segurado = apiBdBo.pesquisarSegurado(values)
+    console.log(segurado)
+
+
+    // setStatus(true);
+    // setSubmitting(false);
   },
 })(About);
 

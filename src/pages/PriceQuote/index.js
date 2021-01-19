@@ -14,7 +14,7 @@ import CachedIcon from "@material-ui/icons/Cached";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
 import Loading from "../../components/loading";
-import { apiQualicorp } from "../../services/bdBo";
+import { apiQualicorp } from "../../services/qualicorp";
 import DialogAlert from '../../components/DialogAlert'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
