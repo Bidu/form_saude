@@ -9,6 +9,8 @@ import './inicio.css'
 export default  () =>{
     useEffect(() => {
         localStorage.setItem("@bidu2/user", JSON.stringify([]))
+        localStorage.setItem("@bidu2/userpme", JSON.stringify([]))
+        localStorage.setItem("@bidu2/databduser", JSON.stringify([]))
         localStorage.setItem("@bidu2/brufselect", JSON.stringify([]))
         localStorage.setItem("@bidu2/saude/plan", JSON.stringify([]))
     }, [])

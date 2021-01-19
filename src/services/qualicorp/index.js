@@ -228,7 +228,11 @@ const apiQualicorp= {
       .catch(function (error) {
         console.log(error);
       });
-    return resposta;
+      let res = {
+        resApi: resposta,
+        payload: lead
+      }
+    return res;
   },
   
   

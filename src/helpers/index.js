@@ -78,7 +78,7 @@ export function FuteDateCheckout(value) {
     month +
     "-" +
     d.getFullYear();
-  console.log(future);
+  // console.log(future);
   return DateToTimestamp(future);
 }
 

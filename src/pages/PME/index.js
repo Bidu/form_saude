@@ -23,7 +23,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { apiQualicorp } from "../../services/qualicorp";
 import {bruf} from "../../services/bruf";
 import TermosUso from '../../components/TermosUso'
-
+import apiBdBo from '../../services/bdBo'
 import "./PME.css"
 import {
   textMaskPhone,
@@ -95,7 +95,7 @@ class About extends Component {
       ],
       pessoasPorFaixa: Array.from(new Array(10), (x, i) => i+1),
       pessoasAddFaixaEtaria: [],
-      storage: JSON.parse(localStorage.getItem("@bidu2/user")),
+      storage: JSON.parse(localStorage.getItem("@bidu2/userpme")),
       qtdeVidas: 2,
       cidadesDisabled : true,
       estado: bruf,
@@ -110,14 +110,14 @@ class About extends Component {
     this.props.values.qtdeVidas = 2
     this.props.values.profissao = "Selecione";
     this.props.values.opt = false
-    const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
+    const storage = JSON.parse(localStorage.getItem("@bidu2/userpme"));
     delete storage.cep 
     delete storage.entidade 
     delete storage.operadora 
     delete storage.profissao
     delete storage.dependents
 
-    localStorage.setItem("@bidu2/user", JSON.stringify(storage))
+    localStorage.setItem("@bidu2/userpme", JSON.stringify(storage))
 
     if (storage.length !== 0) {
       this.setState(storage);
@@ -700,7 +700,7 @@ class About extends Component {
                         name="opt" 
                         value={this.props.values.opt}
                         optinChange={ (props) => { 
-                                                    console.log(props)
+                                                    // console.log(props)
                                                     this.props.values.opt= props
                                                     this.setState({opt: props, clickSubmit: false})                                           
                                                     }}
@@ -818,17 +818,21 @@ const Form = withFormik({
     // setLoading(true)
 
     values.uf = values.estado
-    localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
+    localStorage.setItem("@bidu2/userpme", [JSON.stringify(values)]);
+   
+    await apiBdBo.pesquisarSegurado(values)
 
     let cotationSelect = {
       user: values,
       plan: values
     }
+
     
     let res = await  apiQualicorp.addLead(cotationSelect)
-    
-    
-      if(res.status == 200)
+
+    let resBdBo = await apiBdBo.postCotation({...cotationSelect, payloadQualicorp: res.payload})
+
+      if(res.resApi.status == 200 && resBdBo.status == 200)
           setStatus(true);  
     
     

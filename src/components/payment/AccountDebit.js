@@ -69,7 +69,7 @@ class PayAccountDebit extends Component {
     const dados = JSON.parse(localStorage.getItem("@bidu2/dados_cotacao"));
     super(props);
 
-    console.log(props);
+    // console.log(props);
     this.state = {
       redirect: false,
       value: "",

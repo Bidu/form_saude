@@ -16,6 +16,7 @@ import ErrorQuote from "./ErrorQuote";
 import ListPriceQuotationServices from "./ListPriceQuotationServices";
 import { apiQualicorp } from "../services/qualicorp";
 import CircularProgress from "./CircularProgress"
+import apiBdBo from "../services/bdBo"
 
 
 const marks_fipe = {
@@ -435,14 +436,22 @@ export class ListPriceQuotation extends Component {
 
   setPlanSelect = async (plan) =>{
       localStorage.setItem("@bidu2/saude/plan", JSON.stringify(plan))
+     
+
       let cotationSelect = {
         plan: plan,
         user: JSON.parse(localStorage.getItem("@bidu2/user"))
       }
 
-     let res = await  apiQualicorp.addLead(cotationSelect)
-     if(res.status == 200)
-      this.setState({sucessoAddLead: true})
+
+      let res = await  apiQualicorp.addLead(cotationSelect)
+
+
+     let resBdBo = await apiBdBo.postCotation({...cotationSelect, payloadQualicorp: res.payload})
+    
+    
+     if(res.resApi.status == 200 && resBdBo.status == 200)
+        this.setState({sucessoAddLead: true})
 
   }
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const server = "https://api-banco-dados-dot-bidu-digital-dev.appspot.com/auto";
+const server = "https://api-banco-dados-dot-bidu-digital-dev.appspot.com";
 
 
 const headers = {
@@ -12,19 +12,18 @@ const headers = {
    
     async pesquisarSegurado(segurado) {
         let response = [];
-        const url = `${server}/segurado`;
-        let cpf = { documento: segurado.cpf}
+        const url = `${server}/cliente/produto/2`;
+        let documento = { documento: (segurado.cpf ? segurado.cpf : segurado.cnpj) }
         await axios
-          .post(url, cpf)
+          .post(url, documento)
           .then( async function  (res) {
             response.push(res.data);
-            console.log(res.data.length)
             if(res.status == 200 && res.data)
             {
-               await this.atualizarSegurado( segurado, res.data.id ) 
+               await apiBdBo.atualizarSegurado( segurado, res.data.id ) 
             }
             else{
-                // await apiBdBo.criarSegurado(segurado)   
+                await apiBdBo.criarSegurado(segurado)   
             }
           })
           .catch(function (error) {
@@ -36,26 +35,25 @@ const headers = {
 
     async criarSegurado(segurado) {
         let response = [];
-        let {date_birth} = segurado
-        let dateTime = new Date(`${date_birth} 00:00:00` )
+        if(segurado.date_birth)
+          var {date_birth} = segurado
+
+          let dateTime = new Date(`${date_birth} 00:00:00` ).getTime()
         let person = {
-            "nome": segurado.nome,
-             "documento": ( segurado.cpf == "" ? segurado.cnpj : segurado.cpf ) ,
-             "tipoPessoa":( segurado.cpf == "" ? "JURIDICA": "FISICA"),
+             "nome": ( segurado.cpf ? segurado.nome : `${segurado.nome} / ${segurado.nomecontato}`) ,
+             "documento": ( segurado.cpf ? segurado.cpf : segurado.cnpj ) ,
+             "tipoPessoa":( segurado.cpf ? "FISICA": "JURIDICA"),
              "email":segurado.email,
              "telefone": segurado.telefone,
-             "dataNascimento": dateTime,
-             "genero":"",
-             "profissoes":segurado.profissao,
-             "tipoResidencia":"",
-             "perfilEducacional":""
+             "dataNascimento": ( segurado.cpf ? dateTime : "" ),          
+             "profissoes":( segurado.cpf ? segurado.profissao : "")
            }
         const url = `${server}/segurado/saude`;
         await axios
           .post(url, person)
           .then(function (res) {
-            console.log(res);
             response.push(res.data);
+            apiBdBo.criarEnderecoSegurado(segurado, res.data.insuredId)
           })
           .catch(function (error) {
             console.log(error);
@@ -75,8 +73,8 @@ const headers = {
         await axios
           .put(url, updatePerson)
           .then(function (res) {
-            console.log(res);
             response.push(res.data);
+            apiBdBo.criarEnderecoSegurado(segurado, person_id)
           })
           .catch(function (error) {
             console.log(error);
@@ -84,18 +82,22 @@ const headers = {
         return response;
       },
 
-      async criarEnderecoSegurado(endereco) {
+      async criarEnderecoSegurado(segurado, person_id) {
         let response = [];
         let address = {
-            "idPessoa" : 12595,
-            "cidade":"São Paulo",
-            "estado":"SP"
+            "idPessoa" : person_id,
+            "cidade":segurado.cidade,
+            "estado":segurado.estado
           }
         const url = `${server}/saude/endereco/residencia`;
         await axios
-          .post(url, endereco)
+          .post(url, address)
           .then(function (res) {
-            console.log(res);
+           let person = {
+             person_id: person_id,
+             address_id: res.data.idAddress
+           }
+           localStorage.setItem("@bidu2/databduser",  JSON.stringify(person) )
             response.push(res.data);
           })
           .catch(function (error) {
@@ -112,22 +114,31 @@ const headers = {
 
 
 
-      async postCotation(cotation){
+      async postCotation(data){
         let response = [];
+        let {address_id, person_id} = JSON.parse(localStorage.getItem("@bidu2/databduser"))
+
+        let payload = {
+          ...data.user,
+          planoEscolhido: data.user.cnpj ? "" : data.plan,
+          payloadQualicorp: data.payloadQualicorp.leads[0]
+        }
+      
+
 
         let jsonCotation = {	
-            "idEndereco": 1713,
-            "idPessoa": 12595,
-            "cotacao": {"cpf":"107.755.726-40","nome":"vinicius oliveira","email":"v.cezar21@gmail.com","telefone":"(31) 98930-8060","profissao":"Advogado","entidade":"AASP","date_birth":"1991-12-21","cidade":"São Paulo","estado":"SP","opt":true,"operadoras":[[{"id":92693118000160,"name":"BRADESCO","entite":"AASP"}]],"dependents":[{"id":1,"nome":"maria clara","nascimento":"2017-12-21","idade":3},{"id":2,"nome":"davi do galo","nascimento":"2021-04-30","idade":0}],"estadoCompleto":"São Paulo","entities":[{"id":"AASP","nome":"ASSOCIACAO DOS ADVOGADOS DE SAO PAULO","cnaeEmpresaOperacional":false},{"id":"ABRABDIR","nome":"ASSOCIACAO BRASILEIRA DE ADVOGADOS E BACHAREIS EM DIREITO ABRABDIR","cnaeEmpresaOperacional":false,"tipo":"Fechada","taxa":{"existeTaxa":false,"valor":0},"fichaFiliacao":true},{"id":"ABRACEM","nome":"ASSOCIACAO BRASILEIRA DE CONSULTORES EMPRESARIAIS E PROFISSIONAIS LIBERAIS","cnaeEmpresaOperacional":false,"tipo":"Aberta","taxa":{"existeTaxa":false,"valor":0},"fichaFiliacao":true},{"id":"CAASP","nome":"CAIXA DE ASSISTENCIA DOS ADVOGADOS DE SAO PAULO","cnaeEmpresaOperacional":false}]}
+            "idEndereco": address_id,
+            "idPessoa": person_id,
+            "idProduto": data.user.cnpj ? "" : data.plan.idProdutoFatura,
+            "cotacao": payload
         }
 
 
-        const url = `${server}/saude/endereco/residencia`;
+        const url = `${server}/produto/2/cotacao/cotacao`;
         await axios
-          .post(url, cotation)
+          .post(url, jsonCotation)
           .then(function (res) {
-            console.log(res);
-            response.push(res.data);
+            response = res;
           })
           .catch(function (error) {
             console.log(error);

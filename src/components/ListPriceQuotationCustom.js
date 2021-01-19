@@ -173,7 +173,7 @@ const marks_invalidez_acidente = {
   },
 };
 function log(value) {
-  console.log(value);
+  // console.log(value);
 }
 
 export class ListPriceQuotationCustom extends Component {

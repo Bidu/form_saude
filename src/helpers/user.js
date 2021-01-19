@@ -855,7 +855,7 @@ export function CheckCPF(cpf) {
 }
 export function CheckCNPJ(cnpj) {
   cnpj = cnpj.replace(/[^\d]+/g,'');
-  console.log("cnpj",cnpj)
+  // console.log("cnpj",cnpj)
   if(cnpj == '') return false;
  
   if (cnpj.length != 14)

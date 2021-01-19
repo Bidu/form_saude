@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.13.0
 EXPOSE 80
 # ADD config-docker/default.conf /etc/nginx/conf.d/default.conf
 COPY . /var/www/form/htdocs
@@ -14,7 +14,6 @@ RUN apk add nginx && \
     mv /var/www/form/htdocs/build /var/www/form && \
     cd /var/www/form/htdocs && \
     rm -rf * && \
-    cp -R /var/www/form/build /usr/share/nginx/html && \
     mv /var/www/form/build /var/www/form/htdocs/;
 CMD ["/bin/sh", "-c", "exec nginx -g 'daemon off;';"]
 WORKDIR /var/www/form/htdocs

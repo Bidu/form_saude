@@ -211,7 +211,7 @@ export class PriceQuote extends Component {
             }
             
           })
-          console.log(redeReferenciadaHospital)
+          // console.log(redeReferenciadaHospital)
           // res.data = [...res.data, {idProdutoFatura: e.idProdutoFatura}]
           // redeReferenciadaHospital = [...redeReferenciadaHospital, res.data]
         }

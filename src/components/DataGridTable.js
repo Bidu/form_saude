@@ -50,7 +50,7 @@ const columns = [
       if( deletedRows.length > 0 && deletedRows.filter((val) => val != e[0] ).length > 0 )
       {
         let rows = deletedRows.filter((val) => val != e[0] )
-        console.log('rows', rows)
+        // console.log('rows', rows)
         setDeletedRows([...rows, e[0]]);
       }
       else{

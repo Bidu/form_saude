@@ -911,12 +911,11 @@ const Form = withFormik({
   ) => {
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
 
-    let segurado = apiBdBo.pesquisarSegurado(values)
-    console.log(segurado)
+    await apiBdBo.pesquisarSegurado(values)
 
 
-    // setStatus(true);
-    // setSubmitting(false);
+    setStatus(true);
+    setSubmitting(false);
   },
 })(About);
 
