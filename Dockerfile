@@ -14,7 +14,7 @@ RUN apk add nginx && \
     mv /var/www/form/htdocs/build /var/www/form && \
     cd /var/www/form/htdocs && \
     rm -rf * && \
-    cp /var/www/form/build/* /usr/share/nginx/html && \
+    cp -R /var/www/form/build /usr/share/nginx/html && \
     mv /var/www/form/build /var/www/form/htdocs/;
 CMD ["/bin/sh", "-c", "exec nginx -g 'daemon off;';"]
 WORKDIR /var/www/form/htdocs
