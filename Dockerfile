@@ -8,7 +8,7 @@ RUN apk add nginx && \
     apk add npm && \
     cd /var/www/form/htdocs && \
     npm install && \
-    npm run build:dev && \
+    npm run build:prod && \
     apk del nodejs && \
     apk del npm && \
     mv /var/www/form/htdocs/build /var/www/form && \
