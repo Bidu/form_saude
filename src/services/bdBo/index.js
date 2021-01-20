@@ -129,11 +129,9 @@ const headers = {
         let jsonCotation = {	
             "idEndereco": address_id,
             "idPessoa": person_id,
-            "idProduto": data.user.cnpj ? "" : data.plan.idProdutoFatura,
+            "idProduto": data.payloadQualicorp.leads[0].ID_LEAD,
             "cotacao": payload
         }
-
-
         const url = `${server}/produto/2/cotacao/cotacao`;
         await axios
           .post(url, jsonCotation)
@@ -145,8 +143,5 @@ const headers = {
           });
         return response; 
       }
-
   }
-  
-
   export default apiBdBo

@@ -137,7 +137,7 @@ export class PriceQuote extends Component {
               })
             }
         
-            console.log("idprod", cotationIdProducts.join(","))
+            // console.log("idprod", cotationIdProducts.join(","))
         
         this.setState({cotationAll, cotationFilter: cotationAll})
         await this.getRedeReferenciada(cotationIdProducts)
