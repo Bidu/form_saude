@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const server = "https://api-banco-dados-dot-bidu-digital-dev.appspot.com";
+const server = process.env.REACT_APP_URLBDBO;
 
 
 const headers = {

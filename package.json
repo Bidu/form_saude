@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "curl": "^0.1.4",
     "elliptic": "^6.5.3",
+    "env-cmd": "^10.1.0",
     "fast-text-encoding": "^1.0.3",
     "formik": "^2.1.4",
     "http-proxy": "^1.18.1",
