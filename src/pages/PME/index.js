@@ -802,7 +802,6 @@ const Form = withFormik({
     qtdeVidas: Yup.string()
       .required("Campo Obrigatório")
       .test("qtdeVidas", "Valor inválido. Min 2, Max 3000", (value)=>{
-        console.log(value)
         if (value >= 2 && value <= 3000)
            return true 
         else
