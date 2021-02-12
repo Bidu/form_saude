@@ -230,8 +230,8 @@ export class ListPriceQuotation extends Component {
     if(this.state.lightbox_details ){
       if(this.state.redeReferenciadaHospital.length == 0 )
       {
-        let hospitais = await apiQualicorp.redeReferenciadas(this.state.cotacao.idProdutoFatura, "hospital")
-        let laboratorios = await apiQualicorp.redeReferenciadas(this.state.cotacao.idProdutoFatura, "laboratorio")
+        let hospitais = await apiQualicorp.redeReferenciadas(this.props.quote.idProdutoFatura, "hospital")
+        let laboratorios = await apiQualicorp.redeReferenciadas(this.props.quote.idProdutoFatura, "laboratorio")
  
         this.setState({
           redeReferenciadaHospital: hospitais.data,
@@ -389,7 +389,7 @@ export class ListPriceQuotation extends Component {
       ...this.state,
       redirect: true,
       dados_cotacao: {
-        susep: this.state.cotacao.susep,
+        susep: this.props.quote.susep,
       },
     });
 
@@ -532,6 +532,7 @@ export class ListPriceQuotation extends Component {
                         <>
                           <span className="top-label nome-plano">
                             {cotacao.nomeAmigavel}
+                            {/* {cotacao.idProdutoFatura} */}
                           </span>
                         </>
                       </Grid>
