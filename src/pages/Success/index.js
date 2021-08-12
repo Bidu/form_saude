@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react'
 import Wrapper from "../../components/wrapper";
 import Title from "../../components/Title";
 import Grid from "@material-ui/core/Grid";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
+import whatsappIcon from "./whatsappIcon.svg";
 import { Link, Redirect } from "react-router-dom";
 import { Steps } from "../../components/steps";
 import './sucesso.css'
@@ -31,6 +32,29 @@ export default  () =>{
                 <>
                     <Grid item xs={12}>
                       <img src={icon}></img>
+                      <div className="actions">
+                      <br/>
+                        <div>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            className="wpp--button"
+                            onClick={() =>
+                              window
+                              .open(
+                                "https://api.whatsapp.com/send?phone=551133335555",
+                                "_blank"
+                                )
+                                .focus()
+                              }
+                          >
+                            <span className="wpp--fale"> FALE COM A GENTE &nbsp;</span>{" "}
+                              <span className="wpp--icon">
+                              <img src={whatsappIcon}></img>{" "}
+                            </span>
+                          </Button>
+                        </div>
+                      </div>
                       <Title bold="Recebemos a sua solicitação"  myClass="subtitle"/>
                       <Title text={`Em breve um de nossos consultores entrará em contato.  Se preferir, você também pode realizar uma nova simulação.`}  myClass="subtitleText"/>
                      
