@@ -7,6 +7,7 @@ import { Link, Redirect } from "react-router-dom";
 import { Steps } from "../../components/steps";
 import './sucesso.css'
 import icon from './icon.svg'
+import whatsappIcon from "./whatsappIcon.svg";
 
 export default  () =>{
     useEffect(() => {
@@ -31,7 +32,30 @@ export default  () =>{
                 <>
                     <Grid item xs={12}>
                       <img src={icon}></img>
-                      <Title bold="Recebemos a sua solicitação"  myClass="subtitle"/>
+                      <div className="actions">
+                <br/>
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="wpp--button"
+                  onClick={() =>
+                    window
+                    .open(
+                      "https://api.whatsapp.com/send?phone=551133335555",
+                      "_blank"
+                      )
+                      .focus()
+                    }
+                >
+                  <span className="wpp--fale"> FALE COM A GENTE &nbsp;</span>{" "}
+                    <span className="wpp--icon">
+                    <img src={whatsappIcon}></img>{" "}
+                  </span>
+                </Button>
+              </div>
+            </div>
+                    <Title bold="Recebemos a sua solicitação"  myClass="subtitle"/>
                       <Title text={`Em breve um de nossos consultores entrará em contato.  Se preferir, você também pode realizar uma nova simulação.`}  myClass="subtitleText"/>
                      
                     </Grid>
