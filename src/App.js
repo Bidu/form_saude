@@ -68,7 +68,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <div className="App">
           <Header />
-          <FreshChat/>
+
           <Routes />
         </div>
       </ThemeProvider>
