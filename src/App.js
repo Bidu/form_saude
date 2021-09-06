@@ -5,7 +5,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import Routes from "./routes";
 import { Provider } from "react-redux";
 import store from "./store";
-import FreshChat from './components/FreshChat'
+import WhatsApp from "./components/WhatsApp";
 
 
 const theme = createMuiTheme({
@@ -68,7 +68,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <div className="App">
           <Header />
-
+          <WhatsApp />
           <Routes />
         </div>
       </ThemeProvider>
