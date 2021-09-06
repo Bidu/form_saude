@@ -1,0 +1,38 @@
+    
+.WhatsApp{
+  
+    cursor:pointer;
+   
+    display: table-cell;
+    font-size: 23px;
+    padding: 2px 0 0 2px;
+    text-align: center;
+    vertical-align: middle;
+    display: table;
+    bottom: 20px;
+    height: 75px;
+    min-height: 73px;
+    min-width: 65px;
+    overflow: hidden;
+    position: fixed;
+    right: 15px;
+    width: 100px;
+  
+    z-index: 2147483600;
+}
+
+.WhatsIcon{
+ 
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #27ed51;
+    cursor: pointer;
+    box-shadow: 0 5px 4px 0 rgb(0 0 0 / 26%);
+    border-radius: 34px 8px 34px 34px;
+    transition: background-color 0.3s ease;
+}
+.WhatsIcon:hover{
+    transition: background-color 0.3s ease;
+    background-color: #00c927;
+    box-shadow: 0 8px 4px 0 rgb(0 0 0 / 26%);
+}
