@@ -8,7 +8,7 @@ import { Link, Redirect } from "react-router-dom";
 import { Steps } from "../../components/steps";
 import './sucesso.css'
 import icon from './icon.svg'
-import whatsappIcon from "./whatsappIcon.svg";
+
 
 export default  () =>{
     useEffect(() => {
