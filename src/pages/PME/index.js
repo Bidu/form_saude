@@ -819,6 +819,9 @@ const Form = withFormik({
     values.uf = values.estado
     localStorage.setItem("@bidu2/userpme", [JSON.stringify(values)]);
    
+    const cotation = {user: JSON.parse(localStorage.getItem("@bidu2/userpme"))}
+    await  apiQualicorp.addLead(cotation)
+
     await apiBdBo.pesquisarSegurado(values)
 
     let cotationSelect = {

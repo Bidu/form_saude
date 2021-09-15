@@ -919,9 +919,8 @@ const Form = withFormik({
 
 
     const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-    await delay(700)
+    await delay(400)
     
-    console.log("AQUI");
     setStatus(true);
     setSubmitting(false);
   },
