@@ -99,7 +99,7 @@ class About extends Component {
       cidades: []
     };
     this.handleCEP = this.handleCEP.bind(this);
-   
+    
   }
 
   async componentDidMount() {
@@ -911,9 +911,17 @@ const Form = withFormik({
   ) => {
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
 
+
+    const cotation = {user: JSON.parse(localStorage.getItem("@bidu2/user"))}
+    await  apiQualicorp.addLead(cotation)
+
     await apiBdBo.pesquisarSegurado(values)
 
 
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+    await delay(700)
+    
+    console.log("AQUI");
     setStatus(true);
     setSubmitting(false);
   },

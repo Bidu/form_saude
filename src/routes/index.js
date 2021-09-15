@@ -11,7 +11,7 @@ import { PriceQuote } from "../pages/PriceQuote";
 
 const Routes = () => (
   
-  <BrowserRouter forceRefresh={true} >
+  <BrowserRouter forceRefresh={false} >
     <Switch>
       {/*<Route exact path="/" component={Home} />*/}
       <Route exact path="/" >

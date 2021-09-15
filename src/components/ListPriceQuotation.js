@@ -444,13 +444,13 @@ export class ListPriceQuotation extends Component {
       }
 
 
-      let res = await  apiQualicorp.addLead(cotationSelect)
+      //let res = await  apiQualicorp.addLead(cotationSelect)
 
 
-     let resBdBo = await apiBdBo.postCotation({...cotationSelect, payloadQualicorp: res.payload})
+     let resBdBo = await apiBdBo.postCotation({...cotationSelect, payloadQualicorp: JSON.parse(localStorage.getItem("@bidu2/qualicorp"))?.payload})
     
     
-     if(res.resApi.status == 200 && resBdBo.status == 200)
+     if(resBdBo.status == 200)
         this.setState({sucessoAddLead: true})
 
   }
