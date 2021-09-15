@@ -40,7 +40,7 @@ import {
 
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
-
+import ReactGA from "react-ga";
 
 import { createBrowserHistory } from "history";
 import { entities } from "../../helpers/entities";
@@ -48,6 +48,7 @@ class About extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      zero: 0,
       loading: false,
       error: false,
       // request: true,
@@ -105,6 +106,20 @@ class About extends Component {
   }
 
   async componentDidMount() {
+
+    if (this.state.zero == 0) {
+      ReactGA.set({ page: window.location.pathname });
+      ReactGA.initialize("UA-48773443-1", {
+        debug: true,
+        //titleCase: false,
+      });
+      // To Report Page View
+      ReactGA.pageview(window.location.pathname + window.location.search);
+      console.log("WINDOW", window.location.pathname + window.location.search);
+      this.setState({
+        zero: 1,
+      });
+    }
 
     this.setState({estado: bruf})
     this.props.values.qtdeVidas = 2

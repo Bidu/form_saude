@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import whatsappIcon from "./whatsappIcon.svg";
 import { Link, Redirect } from "react-router-dom";
 import { Steps } from "../../components/steps";
+import ReactGA from "react-ga";
 import './sucesso.css'
 import icon from './icon.svg'
 
@@ -15,11 +16,19 @@ export default  () =>{
         localStorage.setItem("@bidu2/user", JSON.stringify([]))
         localStorage.setItem("@bidu2/saude/plan", JSON.stringify([]))
     }, [])
-    
+    const [zero, setZero] = React.useState(0);
     const [redirect, setRedirect] = useState(false)
-
-
-
+    if (zero == 0) {
+      ReactGA.set({ page: window.location.pathname });
+      ReactGA.initialize("UA-48773443-1", {
+        debug: true,
+        //titleCase: false,
+      });
+      // To Report Page View
+      ReactGA.pageview(window.location.pathname + window.location.search);
+      console.log("WINDOW", window.location.pathname + window.location.search);
+      setZero(1)
+    }
 
     return (
        

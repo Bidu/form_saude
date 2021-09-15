@@ -53,7 +53,7 @@ import "./about.css"
 
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
-
+import ReactGA from "react-ga";
 
 import { createBrowserHistory } from "history";
 import { entities } from "../../helpers/entities";
@@ -61,6 +61,7 @@ class About extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      zero:0,
       loading: false,
       error: false,
       // request: true,
@@ -102,7 +103,23 @@ class About extends Component {
     
   }
 
+  
+
   async componentDidMount() {
+
+    if (this.state.zero == 0) {
+      ReactGA.set({ page: window.location.pathname });
+      ReactGA.initialize("UA-48773443-1", {
+        debug: true,
+        //titleCase: false,
+      });
+      // To Report Page View
+      ReactGA.pageview(window.location.pathname + window.location.search);
+      console.log("WINDOW", window.location.pathname + window.location.search);
+      this.setState({
+        zero: 1,
+      });
+    }
     
     
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
@@ -917,10 +934,7 @@ const Form = withFormik({
 
     await apiBdBo.pesquisarSegurado(values)
 
-
-    const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-    await delay(400)
-    
+  
     setStatus(true);
     setSubmitting(false);
   },

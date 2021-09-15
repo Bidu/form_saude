@@ -23,11 +23,13 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import Drawer from '../../components/Drawer'
 import './priceQuote.css'
+import ReactGA from "react-ga";
 
 export class PriceQuote extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      zero: 0,
       lightbox: false,
       loading: false,
       cotationAll: [],
@@ -310,8 +312,21 @@ export class PriceQuote extends Component {
   }
 
   async componentDidMount() {
-    
-  
+
+    if (this.state.zero == 0) {
+      ReactGA.set({ page: window.location.pathname });
+      ReactGA.initialize("UA-48773443-1", {
+        debug: true,
+        //titleCase: false,
+      });
+      // To Report Page View
+      ReactGA.pageview(window.location.pathname + window.location.search);
+      console.log("WINDOW", window.location.pathname + window.location.search);
+      this.setState({
+        zero: 1,
+      });
+    }
+
     await this.getCotacoes()
 
 
