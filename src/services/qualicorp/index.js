@@ -154,29 +154,45 @@ const apiQualicorp= {
     let dateHour = `${date.getFullYear()}-${month}-${day} ${hour}:${minutes}:${seconds}`
     let beneficiarios = []
     let dateBirthBeneficiarios = []
-    if(cotation.plan.beneficiarios){
-    await ((cotation.plan.beneficiarios)).filter((val)=>{ 
-                                          return (val.chave != cotation.user.nome && 
-                                                  val.dataNascimento != cotation.user.date_birth
-                                                ) 
-                                          }).map((val) => 
-                                          {
-                                            beneficiarios.push({
-                                            DATA_NASC: val.dataNascimento,
-                                            VALOR_PLANO: "0"
-                                          })
+    let qtdVidas = 1
+
+    if(cotation.user?.dependents){
+
+      cotation.user.dependents.forEach(element => {
+      
+       dateBirthBeneficiarios.push(element.nascimento);
+      
+       qtdVidas+= 1;
+          
+       beneficiarios.push({
+          DATA_NASC: element.nascimento,
+          VALOR_PLANO: "0"
+          })
+      });
+  }
+    // if(cotation.plan.beneficiarios){
+    // await ((cotation.plan.beneficiarios)).filter((val)=>{ 
+    //                                       return (val.chave != cotation.user.nome && 
+    //                                               val.dataNascimento != cotation.user.date_birth
+    //                                             ) 
+    //                                       }).map((val) => 
+    //                                       {
+    //                                         beneficiarios.push({
+    //                                         DATA_NASC: val.dataNascimento,
+    //                                         VALOR_PLANO: "0"
+    //                                       })
 
 
-                                          dateBirthBeneficiarios.push(val.dataNascimento)
+    //                                       dateBirthBeneficiarios.push(val.dataNascimento)
                                           
-                                        })
-    }
+    //                                     })
+    // }
    
     let lead = {
       leads:[{
         ID_LEAD: newHash(`${new Date()}${(cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,'') : cotation.user.cnpj.replace(/[^0-9]/g,'') )}`),
-        NM_ORIGEM: "Solicitação",
-        GRUPO_ORIGEM: "Solicitação",
+        NM_ORIGEM: "Captura",
+        GRUPO_ORIGEM: "Captura",
         ORIGEM_INTEGRACAO: `Bidu/Thinkseg - ${cotation.user.cpf ? "Adesão" : "PME"}`,
         DH_CAPTURA_LEAD_ORIGEM: dateHour,
         NOME: cotation.user.cpf ? cotation.user.nome : cotation.user.nomecontato ,
@@ -190,19 +206,19 @@ const apiQualicorp= {
         UF: cotation.user.estado,
         MUNICIPIO: cotation.user.cidade,
         PROFISSAO: (cotation.user.profissao ? cotation.user.profissao : ""),
-        ENTIDADE: (cotation.plan.entidade ? cotation.plan.entidade: ""),
-        OPERADORA: (cotation.plan.operadora ? cotation.plan.operadora : ""),
-        TIPO_ACOMODACAO: ( cotation.plan.acomodacao ? cotation.plan.acomodacao : ""),
-        REEMBOLSO: ( cotation.plan.reembolso ?  cotation.plan.reembolso : "" ),
+        ENTIDADE: (cotation.plan?.entidade ? cotation.plan.entidade: ""),
+        OPERADORA: (cotation.plan?.operadora ? cotation.plan.operadora : ""),
+        TIPO_ACOMODACAO: ( cotation.plan?.acomodacao ? cotation.plan.acomodacao : ""),
+        REEMBOLSO: ( cotation.plan?.reembolso ?  cotation.plan.reembolso : "" ),
         CPF: (cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,''): ""),
         NOME_EMPRESA: cotation.user.cpf ?  "" : cotation.user.nome,
         CNPJ:(cotation.user.cnpj ? cotation.user.cnpj.replace(/[^0-9]/g,''): ""),
         DATA_NASCIMENTO: (cotation.user.date_birth ? cotation.user.date_birth : ""),
-        NUMERO_VIDAS: (cotation.plan.beneficiarios && cotation.plan.beneficiarios.length > 0 ? cotation.plan.beneficiarios.length : cotation.user.qtdeVidas),
+        NUMERO_VIDAS: qtdVidas,
         DEPENDENTES: beneficiarios,
         DT_NASC_DEP: dateBirthBeneficiarios,
-        PLANO: ( cotation.plan.nomePlano ? cotation.plan.nomePlano : ""),
-        VALOR_PLANO_SIMULADO: ( cotation.plan.valorTotal ? cotation.plan.valorTotal : ""),
+        PLANO: ( cotation.plan?.nomePlano ? cotation.plan.nomePlano : ""),
+        VALOR_PLANO_SIMULADO: ( cotation.plan?.valorTotal ? cotation.plan.valorTotal : ""),
         LEAD_CLICK_TO_CALL: true,
         HORA_CLICK_TO_CALL: `${hour}:${minutes}:${seconds}:${miliseconds}`,
         LEAD_CHAT: false,
@@ -232,6 +248,8 @@ const apiQualicorp= {
         resApi: resposta,
         payload: lead
       }
+      localStorage.setItem("@bidu2/qualicorp", JSON.stringify(res));
+
     return res;
   },
   

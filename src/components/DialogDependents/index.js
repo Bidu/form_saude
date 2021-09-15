@@ -69,7 +69,7 @@ export default function DialogDependents(props) {
     setOpen(true);
     const dependentsStorage = JSON.parse(localStorage.getItem("@bidu2/user"))
 
-    if(dependentsStorage.dependents.length > 0 && dependents.length == 0)
+    if(dependentsStorage.dependents?.length > 0 && dependents.length == 0)
         setDependents(dependentsStorage.dependents)
   };
 
