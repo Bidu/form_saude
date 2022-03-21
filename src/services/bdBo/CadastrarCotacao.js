@@ -7,7 +7,7 @@ const headers = {
 
 const apiCheckout = axios.create({
   baseURL:
-    "https://cors-anywhere.herokuapp.com/https://api-banco-dados-w6uut5cujq-rj.a.run.app/auto/",
+    "https://cors-anywhere.herokuapp.com/https://bidu-api-banco.thinkserver.thinkseg.com/auto/",
 });
 
 export const CadastrarCotacaoBd = (quote, body) =>
