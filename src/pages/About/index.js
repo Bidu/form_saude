@@ -133,7 +133,7 @@ class About extends Component {
     if (storage.length !== 0) {
       this.setState(storage);
       this.props.setValues(storage);
-      this.getOccupations(storage.estado, storage.cidade)
+      //this.getOccupations(storage.estado, storage.cidade)
     }
 
     if( Object.keys(brufSelect).length > 0)
@@ -386,7 +386,7 @@ class About extends Component {
     } = this.props;
 
     if (this.props.status) {
-      return <Redirect to="/cotacao" />;
+      return <Redirect to="/sucesso" />;
     }
 
     return (
@@ -574,7 +574,7 @@ class About extends Component {
                       onChange={(event, newValue) => {
                         if(newValue){
                           this.props.values.cidade = newValue
-                          this.getOccupations(this.props.values.estado, this.props.values.cidade)
+                          //this.getOccupations(this.props.values.estado, this.props.values.cidade)
                         }else{
                           this.setState({ occupations: []})
                           
@@ -627,7 +627,7 @@ class About extends Component {
                     />
                   </Grid> */}
                   {/* {this.state.occupations.length > 0 && ( */}
-                    <Grid item xs={12} sm={6}>
+                    {/*<Grid item xs={12} sm={6}>
                       <FormControl component="fieldset" className="price-quote"> 
                       <InputLabel shrink id="profissao">
                         Profissão
@@ -662,7 +662,7 @@ class About extends Component {
 
                     />
                     </FormControl>
-                    </Grid>
+                    </Grid>*/}
                   {/* )} */}
                   {/* {this.state.occupationsFalse == false && (
                     <DialogAlert
@@ -671,7 +671,7 @@ class About extends Component {
                     />
                   )} */}
                   
-                    <Grid item xs={12} sm={6}>
+                    {/*<Grid item xs={12} sm={6}>
                      
                       <Popper textLabel={"Entidades (?)"} />
                       <Select
@@ -705,7 +705,7 @@ class About extends Component {
                         {this.props.errors.entidade}
                       </FormHelperText>
                      }
-                    </Grid>
+                    </Grid>*/}
 
                   {/* {this.state.entitiesFalse == false && (
                     <DialogAlert
@@ -800,7 +800,7 @@ class About extends Component {
                     onClick={() => this.setState({clickSubmit: true})}
                     disabled={!this.state.opt}
                   >
-                    Quero uma cotação
+                    Enviar Solicitação
                   </Button>
                   
                 </div>
@@ -901,8 +901,7 @@ const Form = withFormik({
       .required("Estado é obrigatório"),
       cidade: Yup.string()
       .required("Cidade é obrigatório"),
-    profissao: Yup.string().required("Profissão é obrigatório"),
-    entidade: Yup.string().required("Entidade é obrigatório"),
+
     date_birth: Yup.string()
         .required("Data de nascimento é obrigatório")
         .test("date_birth", "Informe uma data entre ano de 1920 e a data atual!", (value)=>{
@@ -928,12 +927,35 @@ const Form = withFormik({
   ) => {
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
 
-
+    console.log(values);
     const cotation = {user: JSON.parse(localStorage.getItem("@bidu2/user"))}
-    await  apiQualicorp.addLead(cotation)
+    //await  apiQualicorp.addLead(cotation)
 
     await apiBdBo.pesquisarSegurado(values)
 
+    const id = Math.floor(Math.random() * (10000000000000 - 1 + 1) + 1);
+
+    const segurado = {
+      nome: values.nome,
+      documento: values.cpf,
+      email: values.email,
+      dataNascimento: values.date_birth,
+      profissoes: null,
+      genero: null,
+      telefone: values.telefone,
+      product_id: 2,
+      bidu_id_quotation: id,
+    };
+
+    const init = await apiBdBo.saveData(segurado)
+    console.log(init);
+    const update = {
+      status: "pre-cotacao",
+      biduIdQuotation: id,
+      idForm: init[0].idForm,
+      quotation: JSON.stringify(values),
+    };
+    await apiBdBo.saveQuotation(update)
   
     setStatus(true);
     setSubmitting(false);

@@ -732,7 +732,7 @@ class About extends Component {
                     onClick={() => this.setState({clickSubmit: true})}
                     disabled={!this.state.opt}
                   >
-                    Quero uma cotação
+                    Enviar Solicitação
                   </Button>
                     </div>
                   </>
@@ -829,15 +829,16 @@ const Form = withFormik({
     values,
     { props, setStatus, setValues, setSubmitting, setLoading }
   ) => {
-    // setLoading(true)
+     
 
     values.uf = values.estado
     localStorage.setItem("@bidu2/userpme", [JSON.stringify(values)]);
    
     const cotation = {user: JSON.parse(localStorage.getItem("@bidu2/userpme"))}
-    await  apiQualicorp.addLead(cotation)
+    //await  apiQualicorp.addLead(cotation)
 
-    await apiBdBo.pesquisarSegurado(values)
+    const init = await apiBdBo.pesquisarSegurado(values)
+console.log(init);
 
     let cotationSelect = {
       user: values,
@@ -845,12 +846,12 @@ const Form = withFormik({
     }
 
     
-    let res = await  apiQualicorp.addLead(cotationSelect)
+    //let res = await  apiQualicorp.addLead(cotationSelect)
 
-    let resBdBo = await apiBdBo.postCotation({...cotationSelect, payloadQualicorp: res.payload})
-
-      if(res.resApi.status == 200 && resBdBo.status == 200)
-          setStatus(true);  
+    let resBdBo = await apiBdBo.postCotation({...cotationSelect, payloadQualicorp: cotationSelect})
+    console.log(resBdBo);
+    setStatus(true);
+           
     
     
     

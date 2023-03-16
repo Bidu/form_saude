@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const server = process.env.REACT_APP_URLBDBO;
+const server = "https://api-banco-dados-zuxf4camra-rj.a.run.app";
 
 
 const headers = {
@@ -32,7 +32,46 @@ const headers = {
         return response;
       },
 
-
+      async saveData(data) {
+        let reponse = [];
+        const url = `${server}/segurado/all_projects`;
+        await axios
+          .post(url, data, {
+            headers: {
+              Accept: "application/json",
+              "Accept-Version": "v1",
+              "Content-Type": "application/json; charset=UTF-8",
+            },
+          })
+          .then(function (res) {
+            reponse.push(res.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    
+        return reponse;
+      },
+      async saveQuotation(data) {
+        let reponse = [];
+        const url = `${server}/projetos/atualizar-cotacao`;
+        await axios
+          .post(url, data, {
+            headers: {
+              Accept: "application/json",
+              "Accept-Version": "v1",
+              "Content-Type": "application/json; charset=UTF-8",
+            },
+          })
+          .then(function (res) {
+            reponse.push(res.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    
+        return reponse;
+      },
     async criarSegurado(segurado) {
         let response = [];
         if(segurado.date_birth)
@@ -53,7 +92,8 @@ const headers = {
           .post(url, person)
           .then(function (res) {
             response.push(res.data);
-            apiBdBo.criarEnderecoSegurado(segurado, res.data.insuredId)
+            console.log(response);
+            apiBdBo.criarEnderecoSegurado(segurado, response[0].idPessoa)
           })
           .catch(function (error) {
             console.log(error);
@@ -83,6 +123,7 @@ const headers = {
       },
 
       async criarEnderecoSegurado(segurado, person_id) {
+        
         let response = [];
         let address = {
             "idPessoa" : person_id,
@@ -97,6 +138,7 @@ const headers = {
              person_id: person_id,
              address_id: res.data.idAddress
            }
+           console.log(person);
            localStorage.setItem("@bidu2/databduser",  JSON.stringify(person) )
             response.push(res.data);
           })
@@ -118,10 +160,11 @@ const headers = {
         let response = [];
         let {address_id, person_id} = JSON.parse(localStorage.getItem("@bidu2/databduser"))
 
+
         let payload = {
           ...data.user,
           planoEscolhido: data.user.cnpj ? "" : data.plan,
-          payloadQualicorp: data.payloadQualicorp.leads[0]
+          
         }
       
 
@@ -129,10 +172,10 @@ const headers = {
         let jsonCotation = {	
             "idEndereco": address_id,
             "idPessoa": person_id,
-            "idProduto": data.payloadQualicorp.leads[0].ID_LEAD,
+            "idProduto": Date.now(),
             "cotacao": payload
         }
-        const url = `${server}/produto/2/cotacao/cotacao`;
+        const url = `${server}/produto/2/cotacao/pre_cotacao`;
         await axios
           .post(url, jsonCotation)
           .then(function (res) {
