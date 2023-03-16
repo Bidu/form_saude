@@ -93,7 +93,7 @@ const headers = {
           .then(function (res) {
             response.push(res.data);
             console.log(response);
-            apiBdBo.criarEnderecoSegurado(segurado, response[0].idPessoa)
+           apiBdBo.criarEnderecoSegurado(segurado, response[0].idPessoa)
           })
           .catch(function (error) {
             console.log(error);
@@ -140,7 +140,7 @@ const headers = {
            }
            console.log(person);
            localStorage.setItem("@bidu2/databduser",  JSON.stringify(person) )
-            response.push(res.data);
+            response.push(person);
           })
           .catch(function (error) {
             console.log(error);
@@ -156,9 +156,9 @@ const headers = {
 
 
 
-      async postCotation(data){
+      async postCotation(data, person){
         let response = [];
-        let {address_id, person_id} = JSON.parse(localStorage.getItem("@bidu2/databduser"))
+
 
 
         let payload = {
@@ -170,11 +170,13 @@ const headers = {
 
 
         let jsonCotation = {	
-            "idEndereco": address_id,
-            "idPessoa": person_id,
+            "idEndereco": person.address_id,
+            "idPessoa": person.person_id,
             "idProduto": Date.now(),
             "cotacao": payload
         }
+        console.log(jsonCotation);
+        
         const url = `${server}/produto/2/cotacao/pre_cotacao`;
         await axios
           .post(url, jsonCotation)

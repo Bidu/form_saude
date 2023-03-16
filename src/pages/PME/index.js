@@ -824,13 +824,13 @@ const Form = withFormik({
       })
   }),
 
-
+ 
   handleSubmit: async (
     values,
     { props, setStatus, setValues, setSubmitting, setLoading }
   ) => {
-     
-
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    
     values.uf = values.estado
     localStorage.setItem("@bidu2/userpme", [JSON.stringify(values)]);
    
@@ -844,12 +844,14 @@ console.log(init);
       user: values,
       plan: values
     }
+   
+await delay(500)
+const person = JSON.parse(localStorage.getItem("@bidu2/databduser"))
 
-    
     //let res = await  apiQualicorp.addLead(cotationSelect)
 
-    let resBdBo = await apiBdBo.postCotation({...cotationSelect, payloadQualicorp: cotationSelect})
-    console.log(resBdBo);
+    let resBdBo = await apiBdBo.postCotation({...cotationSelect, payloadQualicorp: cotationSelect}, person)
+    //console.log(resBdBo);
     setStatus(true);
            
     
